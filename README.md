@@ -2,17 +2,19 @@
 
 ## Data
 
-The data I propose to visualize for my project is ...
+The data I propose to visualize for my project is a series of Beer Reviews from BeerAdvocate from 2000 to 2011 that has been augmented with location information for the breweries of the beers reviewed.
 
+This data was derrived from a project that I did for a Machine Learning course and can be found at this GitHub location:
+[https://github.com/milepore/BeerStyleLocationAnalysis]
 
 ## Questions & Tasks
 
 The following tasks and questions will drive the visualization and interaction decisions for this project:
 
- * (insert your question or task here) How does the X vary over time?
- * (insert your question or task here) Is there any correlation between X and Y?
- * (insert your question or task here) Are there interesting spatial patterns in X?
- * (insert your question or task here) How many X are there across different Y?
+ * Is there any correlation between beer review rating, location and other attributes about a beer such as style or strength?
+ ** Are there particular regions that have particularly good version of specific beers
+ * What beers would be good to try if I am visiting a particular location
+ * Are there more beers of a particular style that are brewed in a particular location
 
 ## Sketches
 
