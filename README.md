@@ -64,11 +64,11 @@ This shows the relationship between two different variables using bar marks and 
 * Each Variable can be set by the user to allow changing the graph up
 
 Bar/Line (left and right axis) can be set to:
-# Beers
-# Breweries
-Avg Rating
-ABV
-# Reviews
+* # Beers
+* # Breweries
+* Avg Rating
+* ABV
+* # Reviews
 
 Grouping can be set to:
 * Style
@@ -89,11 +89,11 @@ In this case, we are exploring rating vs style grouping
 Signals are point / area across the various axis
 
 Radius can be set to:
-# Beers
-# Breweries
-Avg Rating
-ABV
-# Reviews
+* # Beers
+* # Breweries
+* Avg Rating
+* ABV
+* # Reviews
 
 Grouping can be set to:
 * Style
