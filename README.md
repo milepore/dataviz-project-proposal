@@ -125,12 +125,12 @@ The downside to this is that the filter doesn't have a ton to do with the actual
 ## Milestones
 
 * Week 8 - Experiment with radar chart
-* Week 9 - Data finalization
+* Week 9 - Data finalization, First Filter
 ** Adapt data to support style category
 ** Update data source to include # reviews
-* Week 10 - Filter form to adapt data - a few fields
-* Week 11 - First map view
-* Week 12 - Experiment with Parallel Coordinate View
-* Week 13 - Update Graph pseudo-viz to look at real data
-* Week 14 - Finalize filter and interactivity, put it all together
-  
+** Filter form to adapt data - a few fields
+* Week 10 - First map view
+* Week 11 - Experiment with Parallel Coordinate View
+* Week 12 - Update Graph pseudo-viz to look at real data
+* Week 13 - Finalize filter and interactivity, put it all together
+* Week 14 - Buffer / finalize / write paper  
