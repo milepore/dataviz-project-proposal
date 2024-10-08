@@ -56,7 +56,7 @@ The user can change views with the tabs (map/graph/radar or parallel coordinates
 
 ### Graph View
 
-[Graph View](https://github.com/milepore/dataviz-project-proposal/blob/master/graph.png?raw=true)]
+[Graph View](https://github.com/milepore/dataviz-project-proposal/blob/master/line-and-bar.png?raw=true)]
 
 This shows the relationship between two different variables using bar marks and line marks
 
