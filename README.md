@@ -42,7 +42,7 @@ I have created the following screen sketches for this project:
 
 ### Beer Style Explorer - Map View
 
-[Map View](https://github.com/milepore/dataviz-project-proposal/blob/master/map.png?raw=true)]
+![Map View](https://github.com/milepore/dataviz-project-proposal/blob/master/map.png?raw=true)]
 
 This screen will Let the user explore the relationship between beer and geography.
 
@@ -56,7 +56,7 @@ The user can change views with the tabs (map/graph/radar or parallel coordinates
 
 ### Graph View
 
-[Graph View](https://github.com/milepore/dataviz-project-proposal/blob/master/line-and-bar.png?raw=true)]
+![Graph View](https://github.com/milepore/dataviz-project-proposal/blob/master/line-and-bar.png?raw=true)]
 
 This shows the relationship between two different variables using bar marks and line marks
 
@@ -76,7 +76,7 @@ Grouping can be set to:
 * State (maybe)
 
 ### Radar View
-[Radar View](https://github.com/milepore/dataviz-project-proposal/blob/master/radar.png?raw=true)]
+![Radar View](https://github.com/milepore/dataviz-project-proposal/blob/master/radar.png?raw=true)]
 
 
 I am undecided if I will implment this one.  I really like the way that these show changes as you go from one set of selected data to another -
@@ -100,7 +100,7 @@ Grouping can be set to:
 
 ### Parallel Coordinates View
 
-[Parallel Coordinates View](https://github.com/milepore/dataviz-project-proposal/blob/master/parallel-coordinates.png?raw=true)]
+![Parallel Coordinates View](https://github.com/milepore/dataviz-project-proposal/blob/master/parallel-coordinates.png?raw=true)]
 
 Allows exploring how beers with similar attributes are related.
 
