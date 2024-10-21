@@ -125,14 +125,14 @@ The downside to this is that the filter doesn't have a ton to do with the actual
 ## Milestones
 
 * Week 9 - Map View of World Reviews
-  ** Crated map of world reviews, with pan and zoom
-  ** Updated data to include style families
-* Week 9 - Data finalization, First Filter
-** Adapt data to support style category
-** Update data source to include # reviews
-** Filter form to adapt data - a few fields
-* Week 10 - First map view
-* Week 11 - Experiment with Parallel Coordinate View
+** Crated map of world reviews, with pan and zoom
+** Updated data to include style families
+** Updated data source to include # reviews
 * Week 12 - Update Graph pseudo-viz to look at real data
+** Build summarization function to allow summarizing the fields for histograms
+* Week 10 - First Filter
+** Filter form to adapt data - a few fields
+* Week 11 - Experiment with Parallel Coordinate View
 * Week 13 - Finalize filter and interactivity, put it all together
 * Week 14 - Buffer / finalize / write paper  
+
