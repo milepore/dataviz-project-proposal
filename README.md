@@ -124,7 +124,9 @@ The downside to this is that the filter doesn't have a ton to do with the actual
 
 ## Milestones
 
-* Week 8 - Experiment with radar chart
+* Week 9 - Map View of World Reviews
+  ** Crated map of world reviews, with pan and zoom
+  ** Updated data to include style families
 * Week 9 - Data finalization, First Filter
 ** Adapt data to support style category
 ** Update data source to include # reviews
