@@ -125,8 +125,8 @@ The downside to this is that the filter doesn't have a ton to do with the actual
 ## Milestones
 
 * Week 9 - Map View of World Reviews
-** Crated map of world reviews, with pan and zoom
-** Updated data to include style families
+** Crated map of world reviews, with pan and zoom [https://vizhub.com/milepore/beer_reviews_on_map]
+** Updated data to include style families [https://vizhub.com/milepore/beer_ratings_and_locations]
 ** Updated data source to include # reviews
 * Week 12 - Update Graph pseudo-viz to look at real data
 ** Build summarization function to allow summarizing the fields for histograms
