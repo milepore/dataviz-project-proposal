@@ -1,6 +1,6 @@
 import React from 'react'
 import * as d3 from "d3";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const DataForm = ({ setData }) => {
     const [rawData, setRawData] = useState(null)
@@ -19,12 +19,13 @@ const DataForm = ({ setData }) => {
       ];
 
     function processData(rawData, families) {
+        if (rawData == null || families == null)
+            return;
         var famMap = {};
         for (const style of families) {
             famMap[style.style] = style.family;
         }
         
-        console.log(rawData)
         for (const d of rawData) {
             for (const column of numeric_colums) {
             d[column] = +d[column];
@@ -36,26 +37,21 @@ const DataForm = ({ setData }) => {
     }
 
     function filterData(rawData, filter) {
-        console.log('raw data: ')
-        console.log(rawData)
+        if (rawData == null || filter == null)
+            return;
 
         var filteredData = []
         if (filter == null)
             return rawData;
 
-        console.log(filter)
         for (var dataRow of rawData) {
             if (filter.country == null)
                 filteredData.push(dataRow)
             else if (dataRow.country.includes(filter.country))
                 filteredData.push(dataRow)
-            else
-                console.log('skipping ' + dataRow)
         }
 
-        console.log('filtered data: ' + filteredData)
-
-        return filteredData;
+        setData(filteredData)
     }
 
     if (categoryData == null) {
@@ -64,21 +60,15 @@ const DataForm = ({ setData }) => {
         ).then(function (csvData) {
             setCategoryData(csvData)
         });
-        return (
-            <div/>
-        )
     }
 
     if (rawData == null) {
         d3.csv(
-            "https://raw.githubusercontent.com/milepore/BeerStyleLocationAnalysis/refs/heads/main/individual_beers.csv"
+            "https://raw.githubusercontent.com/milepore/dataviz-project-proposal/refs/heads/master/individual_beers.csv"
         ).then(function (csvData) {
             var rawData=processData(csvData, categoryData)
             setRawData(rawData);
         });
-        return (
-            <div/>
-        )
     }
 
     function updateFilter(field, value)
@@ -86,7 +76,6 @@ const DataForm = ({ setData }) => {
         var newFilter = { ...filter};
         newFilter[field] = value;
         setFilter(newFilter)
-        setData(filterData(rawData,newFilter))
     }
 
     function setCountry(e) {
@@ -95,15 +84,20 @@ const DataForm = ({ setData }) => {
 
     if (filter == null) {
         updateFilter('country', '')
-        return (<div/>)
     }
 
+    useEffect(() => { filterData(rawData, filter) }, [rawData, filter]);
+
+    var country = ""
+    if (filter != null) {
+        country=filter.country;
+    }
 
     return (
         <form>
             <label>Country:
                 <input type="text"
-                    value={filter.country}
+                    value={country}
                     onChange={setCountry}/>
             </label>
         </form>

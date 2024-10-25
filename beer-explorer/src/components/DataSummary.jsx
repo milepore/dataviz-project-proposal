@@ -1,6 +1,6 @@
 import React from 'react'
 import Select from 'react-select'
-import { useState } from 'react';
+import { useEffect } from 'react';
 
 const summary_columns = [ 'beer_abv', 'review_count', 'review_overall' ] 
 const summarize_by = [
@@ -23,15 +23,9 @@ const DataSummary = ({ data, summaryData, setSummaryData }) => {
             return;
 
         var summaryMap = {}
-        // for (var column in summary_columns) {
-        //     summaryMap[column] = { column : column, count: 0, value : 0 }
-        // }
-        console.log(data)
         for (var dataRow of data) {
-            console.log(dataRow)
             summaryKey = dataRow[summarizeBy]
             if (summaryMap[summaryKey] == null) {
-                console.log("Adding key for " + summaryKey)
                 summaryMap[summaryKey] = { count: 0 }
                 for (var column of summary_columns)
                     summaryMap[summaryKey][column] = 0
@@ -46,10 +40,11 @@ const DataSummary = ({ data, summaryData, setSummaryData }) => {
         // { { country : { count : x, column1 : value, column2: value }}, ...}
         // we want to convert it to:
         // { summarizedBy : { key, value }, data : [ { country : value, count : count, column1 : value, column2 : value ]}}
-        var summaryData = [];
+        var summaryRows = [];
+        var rowCount = 0;
         for (var summaryKey in summaryMap) {
             var summaryObject = summaryMap[summaryKey];
-            var summaryRow = { count : summaryObject.count }
+            var summaryRow = { index : rowCount++, count : summaryObject.count }
             summaryRow[summarizeBy] = summaryKey; 
             for (const [column, value] of Object.entries(summaryObject)) {
                 if (!column.endsWith('count')) {
@@ -58,11 +53,10 @@ const DataSummary = ({ data, summaryData, setSummaryData }) => {
                     summaryRow[column] = value;
                 }
             }
-            summaryData.push(summaryRow);
+            summaryRows.push(summaryRow);
         }
 
-        summaryData.data = summaryData;
-        console.log(summaryData)
+        summaryData.data = summaryRows;
         return summaryData;
     }
 
@@ -73,19 +67,21 @@ const DataSummary = ({ data, summaryData, setSummaryData }) => {
 
     function updateSummary(e) {
         console.log(e)
+        summarizeBy = e;
         summarize(data, e);
     }
 
     if (summarizeBy == null) {
-        updateSummary(summarize_by[0])
-        return ( <p>Loading...</p> );
+        summarizeBy = summarize_by[0]
     }
+
+    useEffect(() => { summarize(data, summarizeBy) }, [data, summarizeBy]);
 
     return (
         <form>
             <label>Summarize By:
                 <Select options ={summarize_by}
-                    value={summarizeBy}
+                    value={summarizeBy.value}
                     onChange={updateSummary}/>
             </label>
         </form>

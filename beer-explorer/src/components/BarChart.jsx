@@ -1,65 +1,201 @@
 import * as d3 from "d3";
 import { useEffect, useRef, useState } from "react";
 
-const Barchart = ({ data }) => {
-    const ref = useRef();
 
-    if (data == null) {
-        return (
-            <p>Loading...</p>
+const Barchart = ({ summaryData }) => {
+    function createAxes(
+        svg,
+        width,
+        height,
+        xMargin,
+        yMargin,
+        leftText,
+        rightText,
+        bottomText,
+        leftRange,
+        rightRange,
+        bottomRange,
+    ) {
+        // scales for X and Y axes
+        const xScale = d3.scaleBand()
+        .domain(bottomRange)
+        .range([xMargin, width - xMargin]);
+    
+        const yScaleLeft = d3.scaleLinear()
+        .domain(leftRange)
+        .range([height - yMargin, yMargin]);
+    
+        const yScaleRight = d3.scaleLinear()
+        .domain(d3.extent(rightRange))
+        .range([height - yMargin, yMargin]);
+    
+        // BACKGROUND RECT
+        svg
+        .selectAll('rect.background')
+        .data([null])
+        .join('rect')
+        .attr('class', 'background')
+        .attr('x', xMargin)
+        .attr('y', yMargin)
+        .attr('width', width - xMargin * 2)
+        .attr('height', height - yMargin * 2)
+        .attr('fill', '#B5B5B5')
+        .attr('opacity', 0.5); // Adjust opacity as needed
+    
+        //CREATE AXIS .. move them to the center of the canvas
+        svg
+        .selectAll('g.axisBottom')
+        .data([null])
+        .join('g')
+        .attr('class', 'axisBottom')
+        .attr('transform', `translate(0, ${height - yMargin})`) // Left X Axis
+        .call(d3.axisBottom(xScale));
+    
+        svg
+        .selectAll('g.axisLeft')
+        .data([null])
+        .join('g')
+        .attr('class', 'axisLeft')
+        .attr('transform', `translate(${xMargin}, 0)`) // Y axis
+        .call(d3.axisLeft(yScaleLeft));
+    
+        svg
+        .selectAll('g.axisRight')
+        .data([null])
+        .join('g')
+        .attr('class', 'axisRight')
+        .attr('transform', `translate(${width - xMargin}, 0)`) // Y axis
+        .call(d3.axisRight(yScaleRight));
+    
+        // Add X and Y labels
+        svg
+        .selectAll('text.leftText')
+        .data([null])
+        .join('text')
+        .attr('class', 'leftText')
+        .attr(
+            'transform',
+            `translate(${xMargin / 2}, ${height / 2}) rotate(-90)`,
         )
+        .style('text-anchor', 'middle')
+        .style('font-weight', 'bold')
+        .style('fill', 'red')
+        .text(leftText);
+    
+        svg
+        .selectAll('text.bottomText')
+        .data([null])
+        .join('text')
+        .attr('class', 'bottomText')
+        .attr('x', width / 2)
+        .attr('y', height - yMargin / 2)
+        .style('text-anchor', 'middle')
+        .style('font-weight', 'bold')
+        .text(bottomText);
+    
+        svg
+        .selectAll('text.rightText')
+        .data([null])
+        .join('text')
+        .attr('class', 'rightText')
+        .attr(
+            'transform',
+            `translate(${width - xMargin / 2}, ${height / 2}) rotate(90)`,
+        )
+        .style('text-anchor', 'middle')
+        .style('font-weight', 'bold')
+        .style('fill', 'black')
+        .text(rightText);
+
+        return [ yScaleLeft, yScaleRight, xScale ]
     }
 
-    console.log(ref)
-    // set the dimensions and margins of the graph
-    const margin = { top: 30, right: 30, bottom: 70, left: 60 },
-        width = 460 - margin.left - margin.right,
-        height = 400 - margin.top - margin.bottom;
+    const width = 900;
+    const height = 600;
 
-    // append the svg object to the body of the page
-    const svg = d3
-        .select(ref.current).selectAll("svg")
-        .data([null]).join("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .selectAll("g").data([null]).join("g")
-        .attr("transform", `translate(${margin.left},${margin.top})`);
+    const ref = useRef();
+    useEffect(() => {
 
-    console.log('data=')
-    console.log(data)
+        if (summaryData == null) {
+            return 
+        }
 
-    // X axis
-    const x = d3
-        .scaleBand()
-        .range([0, width])
-        .domain(data.map((d) => d.Country))
-        .padding(0.2);
-    svg.selectAll("g.axis-bottom")
-        .data([null]).join("g").attr("class", "axis-bottom")
-        .attr("transform", `translate(0, ${height})`)
-        .call(d3.axisBottom(x))
-        .selectAll("text")
-        .attr("transform", "translate(-10,0)rotate(-45)")
-        .style("text-anchor", "end");
+        var data = summaryData.data;
+        var summarizedBy = summaryData.summarizedBy;
 
-    // Add Y axis
-    const y = d3.scaleLinear().domain([0, 13000]).range([height, 0]);
-    svg.selectAll("g.axis-left").
-        data([null]).join("g").attr("class", "axis-left")
-        .call(d3.axisLeft(y));
+        // set the dimensions and margins of the graph
+        const barHeight = (d) => d * 3 + 10;
+        const spacing = width / (data.length + 1);
+        const barCenter = spacing * 0.33;
+        const xMargin = 100;
+        const yMargin = 100;
+        const ratingScale = 50.0;
+        const barWidth = spacing * .66;
 
-    // Bars
-    svg.selectAll("rect.databar")
-        .data(data)
-        .join("rect")
-        .attr("class", "databar")
-        .attr("x", (d) => x(d.Country))
-        .attr("y", (d) => y(d.Value))
-        .attr("width", x.bandwidth())
-        .attr("height", (d) => height - y(d.Value))
-        .attr("fill", "#5f0f40");
+        const lineGenerator = d3.line(
+            // (d) =>
+            //   d.index * spacing +
+            //   barCenter +
+            //   xMargin +
+            //   barWidth / 2,
+            // (d) => height - (d.avg * ratingScale + yMargin),
+            (d) => scaleBottom(d[summarizedBy.value]) + spacing / 2,
+            (d) => scaleLeft(d.review_overall)
+        );
+        
+        // append the svg object to the body of the page
+        // const svg = d3
+        //     .select(ref.current).selectAll("svg")
+        //     .data([null]).join("svg")
+        //     .attr("width", width + xMargin*2)
+        //     .attr("height", height + yMargin*2)
+        //     .selectAll("g").data([null]).join("g")
+        //     .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    return <svg width={460} height={400} id="barchart" ref={ref} />;
+        const svg = d3.select(ref.current)
+            .selectAll('svg')
+            .data([null]).join('svg')
+            .attr('width', width)
+            .attr('height', height);
+        
+        var [ scaleLeft, scaleRight, scaleBottom ] = createAxes(
+            svg,
+            width,
+            height,
+            xMargin,
+            yMargin,
+            'Average Rating',
+            'Number Beers',
+            summarizedBy.label,
+            [0, 5],
+            [0, Math.max.apply(null, data.map((x) => x.count))],
+            data.map((x) => x[summarizedBy.value]),
+        );
+        
+        svg
+            .selectAll('rect.datarect')
+            .data(data)
+            .join('rect')
+            .attr('class', 'datarect')
+            .attr('x', (d) => scaleBottom(d[summarizedBy.value]))
+            .attr('y', (d) => scaleRight(d.count))
+            .attr('width', barWidth)
+            .attr('height', (d) => scaleRight(0)-scaleRight(d.count));
+    
+        svg
+            .selectAll('path.datapath')
+            .data([data])
+            .join('path')
+            .attr('class', 'datapath')
+            .attr('fill', 'none')
+            .attr('d', lineGenerator)
+            .attr('stroke', 'red')
+            .attr('stroke-width', 8)
+            .attr('stroke-linecap', 'round')
+            .attr('stroke-linejoin', 'round');
+    });
+
+    return <svg width={width} height={height} id="barchart" ref={ref} />;
 };
 
 export default Barchart;

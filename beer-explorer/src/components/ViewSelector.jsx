@@ -19,7 +19,7 @@ const ViewSelector = ({ data }) => {
         MAP
         </TabPanel>
         <TabPanel>
-        <BarChart data={summaryData}/>
+        <BarChart summaryData={summaryData}/>
         <DataSummary data={data} summaryData={summaryData} setSummaryData={setSummaryData}/>
         </TabPanel>
     </Tabs>
