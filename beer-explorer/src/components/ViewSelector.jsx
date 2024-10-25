@@ -1,23 +1,26 @@
 import React from 'react'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
-import BarChart from './BarChart'
+import BarChart from './BarChart';
+import DataSummary from './DataSummary';
 import { useState } from "react";
 import 'react-tabs/style/react-tabs.css';
 
-const ViewSelector = ({ data, setData }) => {
+const ViewSelector = ({ data }) => {
+    const [ summaryData, setSummaryData ] = useState()
 
     return (
         <Tabs>
         <TabList>
-        <Tab>Map</Tab>
+        <Tab>Beer Explorer</Tab>
         <Tab>Bar Chart</Tab>
         </TabList>
 
         <TabPanel>
         MAP
         </TabPanel>
-        <TabPanel data={data} setData={setData}>
-        <BarChart data={data} setData={setData}/>
+        <TabPanel>
+        <BarChart data={summaryData}/>
+        <DataSummary data={data} summaryData={summaryData} setSummaryData={setSummaryData}/>
         </TabPanel>
     </Tabs>
     )

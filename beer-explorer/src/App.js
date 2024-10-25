@@ -10,8 +10,8 @@ function App() {
   return (
     <div className="App">
     <h1>Beer Explorer</h1>
-    <ViewSelector data={data} setData={setData}/>
-    <DataForm data={data} setData={setData}/>
+    <ViewSelector data={data}/>
+    <DataForm setData={setData}/>
     </div>
   );}
 

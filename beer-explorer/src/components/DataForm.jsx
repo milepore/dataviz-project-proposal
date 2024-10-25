@@ -2,51 +2,102 @@ import React from 'react'
 import * as d3 from "d3";
 import { useState } from 'react';
 
-const DataForm = ({ data, setData }) => {
+const DataForm = ({ setData }) => {
     const [rawData, setRawData] = useState(null)
-    const [filter, setFilter] = useState({})
+    const [categoryData, setCategoryData] = useState(null)
+    const [filter, setFilter] = useState(null)
+    const numeric_colums = [
+        'index',
+        'brewery_id',
+        'beer_abv',
+        'beer_beerid',
+        'lat',
+        'lng',
+        'review_overall',
+        'beer_style_id',
+        'review_count',
+      ];
 
-    function applyFilter(rawData, filter) {
-        var filteredData = []
-        console.log(filter)
-        console.log(filter.country)
+    function processData(rawData, families) {
+        var famMap = {};
+        for (const style of families) {
+            famMap[style.style] = style.family;
+        }
+        
         console.log(rawData)
-        for (var data of rawData) {
+        for (const d of rawData) {
+            for (const column of numeric_colums) {
+            d[column] = +d[column];
+            }
+            d['family'] = famMap[d.beer_style];
+        }
+        
+        return rawData;
+    }
+
+    function filterData(rawData, filter) {
+        console.log('raw data: ')
+        console.log(rawData)
+
+        var filteredData = []
+        if (filter == null)
+            return rawData;
+
+        console.log(filter)
+        for (var dataRow of rawData) {
             if (filter.country == null)
-                filteredData.push(data)
-            else if (data.Country.includes(filter.country))
-                filteredData.push(data)
+                filteredData.push(dataRow)
+            else if (dataRow.country.includes(filter.country))
+                filteredData.push(dataRow)
             else
-                console.log('skipping ' + data)
+                console.log('skipping ' + dataRow)
         }
 
         console.log('filtered data: ' + filteredData)
+
         return filteredData;
     }
-    
-    if (rawData == null) {
+
+    if (categoryData == null) {
         d3.csv(
-        "https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/7_OneCatOneNum_header.csv"
-      ).then(function (csvData) {
-        setRawData(csvData)
-        setData(applyFilter(csvData, filter))
-      });
-      return (
-        <div/>
-      )
+            "https://raw.githubusercontent.com/milepore/dataviz-project-proposal/refs/heads/master/beer-explorer/data/beer-style-families.csv"
+        ).then(function (csvData) {
+            setCategoryData(csvData)
+        });
+        return (
+            <div/>
+        )
     }
 
+    if (rawData == null) {
+        d3.csv(
+            "https://raw.githubusercontent.com/milepore/BeerStyleLocationAnalysis/refs/heads/main/individual_beers.csv"
+        ).then(function (csvData) {
+            var rawData=processData(csvData, categoryData)
+            setRawData(rawData);
+        });
+        return (
+            <div/>
+        )
+    }
 
     function updateFilter(field, value)
     {
-        filter[field] = value;
-        setFilter(filter)
-        setData(applyFilter(rawData, filter))
+        var newFilter = { ...filter};
+        newFilter[field] = value;
+        setFilter(newFilter)
+        setData(filterData(rawData,newFilter))
     }
 
     function setCountry(e) {
         updateFilter('country', e.target.value);
     }
+
+    if (filter == null) {
+        updateFilter('country', '')
+        return (<div/>)
+    }
+
 
     return (
         <form>

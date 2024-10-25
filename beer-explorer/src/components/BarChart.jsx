@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 import { useEffect, useRef, useState } from "react";
 
-const Barchart = ({ data, setData }) => {
+const Barchart = ({ data }) => {
     const ref = useRef();
 
     if (data == null) {
