@@ -110,11 +110,23 @@ Leverages color channel to show how style family is related.
 
 Uses same filter to break things down
 
+## Live Application
+
+I Have moved this project from vizhub to github (as a subdirectory of this repo), and used the gh-pages plugin to react to publish it here as a GitHub pages.
+
+You can find the live application at:
+
+https://milepore.github.io/dataviz-project-proposal/
+
+If you see an old version, you may need to refresh your browser.
+
 ## Prototypes
 
 I’ve created a proof of concept visualization of this data. It's is the graph view, and shows several styles of beers, and the realationship of number of beers to average rating:
 
 [![image](https://github.com/milepore/dataviz-project-proposal/blob/master/vizhub-pseudo-viz-line%20and%20bar.png?raw=true)]((https://vizhub.com/milepore/30ff36601d1747a4a109335ddb479d9e))
+
+
 
 ## Open Questions
 
