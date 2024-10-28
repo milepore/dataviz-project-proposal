@@ -5,7 +5,7 @@ import DataSummary from './DataSummary';
 import { useState } from "react";
 import 'react-tabs/style/react-tabs.css';
 
-const ViewSelector = ({ data }) => {
+const ViewSelector = ({ data, column_defs }) => {
     const [ summaryData, setSummaryData ] = useState()
 
     return (
@@ -19,8 +19,8 @@ const ViewSelector = ({ data }) => {
         MAP
         </TabPanel>
         <TabPanel>
-        <BarChart summaryData={summaryData}/>
-        <DataSummary data={data} summaryData={summaryData} setSummaryData={setSummaryData}/>
+        <BarChart summaryData={summaryData} column_defs={column_defs}/>
+        <DataSummary data={data} summaryData={summaryData} setSummaryData={setSummaryData} column_defs={column_defs}/>
         </TabPanel>
     </Tabs>
     )

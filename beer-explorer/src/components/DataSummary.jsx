@@ -10,8 +10,19 @@ const summarize_by = [
     { value : 'beer_style', label : 'Style' }
 ]
 
-const DataSummary = ({ data, summaryData, setSummaryData }) => {
-    var summarizeBy = summarize_by[0];
+function buildSelectBox(column_defs, selector) {
+    var selectBox = []
+    for (var column in column_defs) {
+        if (selector(column_defs[column])) {
+            selectBox.push({ value : column, label : column_defs[column].description})
+        }
+    }
+    return selectBox;
+}
+
+const DataSummary = ({ data, summaryData, setSummaryData, column_defs }) => {
+    const summarize_by = buildSelectBox(column_defs, (c) => c.group_by == true)
+    var summarizeBy = summarize_by[0]; 
     if (summaryData != null && summaryData.summarizedBy != null)
         summarizeBy = summaryData.summarizedBy;
 
