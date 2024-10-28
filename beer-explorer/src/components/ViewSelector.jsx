@@ -1,6 +1,7 @@
 import React from 'react'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import BarChart from './BarChart';
+import MapView from './MapView';
 import DataSummary from './DataSummary';
 import { useState } from "react";
 import 'react-tabs/style/react-tabs.css';
@@ -16,7 +17,7 @@ const ViewSelector = ({ data, column_defs }) => {
         </TabList>
 
         <TabPanel>
-        MAP
+        <MapView data={data}/>
         </TabPanel>
         <TabPanel>
         <BarChart summaryData={summaryData} column_defs={column_defs}/>
