@@ -82,11 +82,12 @@ const DataSummary = ({ data, summaryData, setSummaryData, column_defs }) => {
 
     useEffect(() => { summarize(data, summarizeBy) }, [data, summarizeBy]);
 
+    console.log(summarize_by);
     return (
         <form>
             <label>Summarize By:
-                <select options ={summarize_by}
-                    value={summarizeBy.value}
+                <Select options ={summarize_by}
+                    value={summarizeBy}
                     onChange={updateSummary}/>
             </label>
         </form>
