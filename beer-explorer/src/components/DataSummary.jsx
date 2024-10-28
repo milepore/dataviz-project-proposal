@@ -3,12 +3,6 @@ import Select from 'react-select'
 import { useEffect } from 'react';
 
 const summary_columns = [ 'beer_abv', 'review_count', 'review_overall' ] 
-const summarize_by = [
-    { value : 'family' , label : 'Style Family'},
-    { value : 'state', label : 'State' },
-    { value : 'country', label : 'Country' },
-    { value : 'beer_style', label : 'Style' }
-]
 
 function buildSelectBox(column_defs, selector) {
     var selectBox = []
@@ -91,7 +85,7 @@ const DataSummary = ({ data, summaryData, setSummaryData, column_defs }) => {
     return (
         <form>
             <label>Summarize By:
-                <Select options ={summarize_by}
+                <select options ={summarize_by}
                     value={summarizeBy.value}
                     onChange={updateSummary}/>
             </label>

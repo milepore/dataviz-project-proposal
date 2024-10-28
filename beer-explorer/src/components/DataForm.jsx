@@ -1,6 +1,7 @@
 import React from 'react'
 import * as d3 from "d3";
 import { useState, useEffect } from 'react';
+import Select from 'react-select';
 import { getNumericColumns, getSelectColumns } from '../data-defs';
 
 const DataForm = ({ setData, column_defs }) => {
@@ -58,8 +59,11 @@ const DataForm = ({ setData, column_defs }) => {
             // filter each column
             for (var column in column_defs) {
                 if (column_defs[column].filter_type == "multi") {
-                    if ((filter[column] != null) && (!filter[column].includes(dataRow[column])))
-                        includeRow = false
+                    if ((filter[column] != null)&&(filter[column].length != 0)) {
+                        const filterValues = filter[column].map((e) => e.value);
+                        if (!filterValues.includes(dataRow[column]))
+                            includeRow = false
+                    }
                 }
             }
 
@@ -104,32 +108,30 @@ const DataForm = ({ setData, column_defs }) => {
         return value;
     }
 
-    function updateFilter(e) {
-        var fieldName = e.target.name;
-        var fieldValue = e.target.value;
-
-        if (e.target.multiple)
-            fieldValue = Array.from(e.target.selectedOptions, option => option.value);
-
-        console.log('filter ' + fieldName + ' to ' + fieldValue)
+    function updateFilter(fieldName, value) {
+        console.log('filter ' + fieldName + ' to ' + value)
 
         var newFilter = { ...filter};
-        newFilter[fieldName] = fieldValue;
+        newFilter[fieldName] = value;
         setFilter(newFilter)
+    }
+
+    function updateMultiFilter(fieldName, e) {
+        updateFilter(fieldName, e);
     }
 
     function makeFilterElement( [ fieldName, fieldDef ] ) {
         console.log(fieldDef)
         if (fieldDef.filter_type == 'multi') {
             // get a list of all value for this field
-            var options = getFieldValues(fieldName)
+            var options = getFieldValues(fieldName).map((d) => {return { value : d, label : d}});
             // create select
             var value = filter[fieldName];
-            return <label>{column_defs[fieldName].description}: <select size={5} name={fieldName} multiple={true} value={getFilterValue(fieldName)} onChange={updateFilter}>
+            return <label>{column_defs[fieldName].description}: <Select size={5} name={fieldName} isMulti={true} value={getFilterValue(fieldName)} onChange={(e) => updateMultiFilter(fieldName, e)} options={options}>
                 {
                     options.sort().map((d) => <option value={d}>{d}</option>)
                 }
-            </select></label>
+            </Select></label>
         }
     }
 
