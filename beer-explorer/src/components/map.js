@@ -15,6 +15,7 @@ import {
       initialScale,
     },
   ) => {
+    console.log(position);
     const projection = geoNaturalEarth1()
       .center(position)
       .scale(initialScale * scale);

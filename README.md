@@ -1,5 +1,13 @@
 # Data Visualization Project
 
+## Live Project
+
+This project is no longer hosted in DataViz - because using a bunch of react components (like react-select) made building the filters and interactivity easier.  Instead its hosted here on github pages.  You can access the current working build here:
+
+[https://milepore.github.io/dataviz-project-proposal/]
+
+I was able to publish this using the gh-pages plugin.  Unfortunately that sometimes means that caching takes place so if you see weird behavior, just refresh your browser.  The Cache TTL is about 10 minutes by default on github pages, so it isn't too big an issue.
+
 ## Data
 
 The data I propose to visualize for my project is a series of Beer Reviews from BeerAdvocate from 2000 to 2011 that has been augmented with location information for the breweries of the beers reviewed.
@@ -110,16 +118,6 @@ Leverages color channel to show how style family is related.
 
 Uses same filter to break things down
 
-## Live Application
-
-I Have moved this project from vizhub to github (as a subdirectory of this repo), and used the gh-pages plugin to react to publish it here as a GitHub pages.
-
-You can find the live application at:
-
-https://milepore.github.io/dataviz-project-proposal/
-
-If you see an old version, you may need to refresh your browser.
-
 ## Prototypes
 
 I’ve created a proof of concept visualization of this data. It's is the graph view, and shows several styles of beers, and the realationship of number of beers to average rating:
@@ -134,17 +132,22 @@ The biggest uncertianties that I'm worried about is making the interactive filte
 
 The downside to this is that the filter doesn't have a ton to do with the actual visualizations, but everything to do with the tasks the user has to perform.  The visualizations, I'm not worried about too much at this point - although the map seems like it might be a little complicated, but I'm not super-worried yet.
 
-## Milestones
+## Milestones and Live Progress
 
 * Week 9 - Map View of World Reviews
 ** Crated map of world reviews, with pan and zoom [https://vizhub.com/milepore/beer_reviews_on_map]
 ** Updated data to include style families [https://vizhub.com/milepore/beer_ratings_and_locations]
 ** Updated data source to include # reviews
-* Week 12 - Update Graph pseudo-viz to look at real data
-** Build summarization function to allow summarizing the fields for histograms
-* Week 10 - First Filter
-** Filter form to adapt data - a few fields
-* Week 11 - Experiment with Parallel Coordinate View
-* Week 13 - Finalize filter and interactivity, put it all together
+* Week 10 - Migrated (per professor's suggestion) to react application instead of Vizhub
+** Got filter view working - for multi-select (state, country, style) fields
+** Got map ported over to react - that was a bit of a pain
+*** Getting the various pan/zoom to work with react state models was challenging, but works now
+** Got summarization filter working for non-map views
+** Got Graph view looking at real data
+* Week 11 - Enhance data views
+** Add axis pickers to graph view
+** Add data sorting for graph view
+* Week 12 - Experiment with Parallel Coordinate View & Add additional filter fields
+* Week 13 - Buffer, tuning, look&feel / CSS
 * Week 14 - Buffer / finalize / write paper  
 
