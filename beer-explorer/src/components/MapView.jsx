@@ -8,9 +8,6 @@ import { one } from 'd3-rosetta'
 const worldAtlasURL =
   'https://unpkg.com/visionscarto-world-atlas@0.1.0/world/110m.json';
 
-
-
-
 const MapView = ({ data }) => {
     const width = 900;
     const height = 600;
@@ -51,7 +48,7 @@ const MapView = ({ data }) => {
                 .attr('transform', zoom)
                 .call(map, { countries, reviews : data });
         }
-    }, [countries, zoom]);
+    }, [countries, data, zoom]);
 
     if (countries === undefined) {
         fetch(worldAtlasURL)

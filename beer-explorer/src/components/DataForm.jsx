@@ -36,6 +36,11 @@ const DataForm = ({ setData, column_defs }) => {
                 }
             }
         }
+
+        // now we want to sort all our column values
+        for (var c in columnValues) {
+            columnValues[c] = columnValues[c].sort();
+        }
         
         return {
             csvData : csvData,
@@ -128,9 +133,6 @@ const DataForm = ({ setData, column_defs }) => {
             // create select
             var value = filter[fieldName];
             return <label>{column_defs[fieldName].description}: <Select size={5} name={fieldName} isMulti={true} value={getFilterValue(fieldName)} onChange={(e) => updateMultiFilter(fieldName, e)} options={options}>
-                {
-                    options.sort().map((d) => <option value={d}>{d}</option>)
-                }
             </Select></label>
         }
     }
