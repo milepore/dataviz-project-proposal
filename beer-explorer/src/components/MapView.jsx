@@ -1,7 +1,7 @@
 import * as topojson from "topojson-client";
 import { map } from './map';
 import * as d3 from "d3";
-import { useEffect, useRef, useState, setState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { one } from 'd3-rosetta'
 
 
@@ -11,9 +11,6 @@ const worldAtlasURL =
 const MapView = ({ data }) => {
     const width = 900;
     const height = 600;
-    const panningSensitivity = 58;
-    const initialScale = width / 1.8 / Math.PI;
-
 
     const [ countries, setCountries ] = useState();
     const [ zoom, setZoom ] = useState();

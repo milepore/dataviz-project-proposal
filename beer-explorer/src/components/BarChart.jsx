@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 
 const Barchart = ({ summaryData }) => {
@@ -124,12 +124,10 @@ const Barchart = ({ summaryData }) => {
         var summarizedBy = summaryData.summarizedBy;
 
         // set the dimensions and margins of the graph
-        const barHeight = (d) => d * 3 + 10;
         const spacing = width / (data.length + 1);
         const barCenter = spacing * 0.33;
         const xMargin = 100;
         const yMargin = 100;
-        const ratingScale = 50.0;
         const barWidth = spacing * .66;
 
         const lineGenerator = d3.line(
@@ -177,7 +175,7 @@ const Barchart = ({ summaryData }) => {
             .data(data)
             .join('rect')
             .attr('class', 'datarect')
-            .attr('x', (d) => scaleBottom(d[summarizedBy.value]))
+            .attr('x', (d) => scaleBottom(d[summarizedBy.value])) // - barcenter?
             .attr('y', (d) => scaleRight(d.count))
             .attr('width', barWidth)
             .attr('height', (d) => scaleRight(0)-scaleRight(d.count));

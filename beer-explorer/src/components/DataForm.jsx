@@ -11,6 +11,38 @@ const DataForm = ({ setData, column_defs }) => {
     const numeric_colums = getNumericColumns(column_defs);
     const select_columns = getSelectColumns(column_defs);
 
+    function filterData(rawData, filter) {
+        if (rawData == null || filter == null)
+            return;
+
+        var filteredData = []
+        if (filter == null)
+            return rawData;
+
+        var csvData = rawData.csvData;
+
+        for (var dataRow of csvData) {
+            var includeRow = true;
+
+            // filter each column
+            for (var column in column_defs) {
+                if (column_defs[column].filter_type === "multi") {
+                    if ((filter[column] != null)&&(filter[column].length != 0)) {
+                        const filterValues = filter[column].map((e) => e.value);
+                        if (!filterValues.includes(dataRow[column]))
+                            includeRow = false
+                    }
+                }
+            }
+
+            if (includeRow) {
+                filteredData.push(dataRow)
+            }
+        }
+
+        setData(filteredData)
+    }
+
     function processData(csvData, families) {
         var columnValues = {}
 
@@ -30,7 +62,7 @@ const DataForm = ({ setData, column_defs }) => {
                 d[column] = +d[column];
             }
             d['family'] = famMap[d.beer_style];
-            for (var c of select_columns) {
+            for (c of select_columns) {
                 if (!columnValues[c].includes(d[c])) {
                     columnValues[c].push(d[c])
                 }
@@ -38,7 +70,7 @@ const DataForm = ({ setData, column_defs }) => {
         }
 
         // now we want to sort all our column values
-        for (var c in columnValues) {
+        for (c in columnValues) {
             columnValues[c] = columnValues[c].sort();
         }
         
@@ -48,37 +80,6 @@ const DataForm = ({ setData, column_defs }) => {
         };
     }
 
-    function filterData(rawData, filter) {
-        if (rawData == null || filter == null)
-            return;
-
-        var filteredData = []
-        if (filter == null)
-            return rawData;
-
-        var csvData = rawData.csvData;
-
-        for (var dataRow of csvData) {
-            var includeRow = true;
-
-            // filter each column
-            for (var column in column_defs) {
-                if (column_defs[column].filter_type == "multi") {
-                    if ((filter[column] != null)&&(filter[column].length != 0)) {
-                        const filterValues = filter[column].map((e) => e.value);
-                        if (!filterValues.includes(dataRow[column]))
-                            includeRow = false
-                    }
-                }
-            }
-
-            if (includeRow) {
-                filteredData.push(dataRow)
-            }
-        }
-
-        setData(filteredData)
-    }
 
     if (categoryData == null) {
         d3.csv(
@@ -127,11 +128,10 @@ const DataForm = ({ setData, column_defs }) => {
 
     function makeFilterElement( [ fieldName, fieldDef ] ) {
         console.log(fieldDef)
-        if (fieldDef.filter_type == 'multi') {
+        if (fieldDef.filter_type === 'multi') {
             // get a list of all value for this field
             var options = getFieldValues(fieldName).map((d) => {return { value : d, label : d}});
             // create select
-            var value = filter[fieldName];
             return <label>{column_defs[fieldName].description}: <Select size={5} name={fieldName} isMulti={true} value={getFilterValue(fieldName)} onChange={(e) => updateMultiFilter(fieldName, e)} options={options}>
             </Select></label>
         }
@@ -142,11 +142,6 @@ const DataForm = ({ setData, column_defs }) => {
     }
 
     useEffect(() => { filterData(rawData, filter) }, [rawData, filter]);
-
-    var country = ""
-    if (filter != null) {
-        country=filter.country;
-    }
 
     return (
         <form>

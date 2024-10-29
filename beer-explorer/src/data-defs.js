@@ -25,9 +25,9 @@ export function selectColumns(s) {
 }
 
 export function getNumericColumns() {
-    return selectColumns((s) => s.type == "numeric")
+    return selectColumns((s) => s.type === "numeric")
 }
 
 export function getSelectColumns() {
-    return selectColumns((s) => s.filter_type == "multi")
+    return selectColumns((s) => s.filter_type === "multi")
 }

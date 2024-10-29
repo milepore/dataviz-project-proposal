@@ -4,7 +4,7 @@ import {
     geoGraticule,
     scaleLinear,
   } from 'd3';
-  import { one, Memoize } from 'd3-rosetta';
+  import { Memoize } from 'd3-rosetta';
   
   export const map = (
     selection,

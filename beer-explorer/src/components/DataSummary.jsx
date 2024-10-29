@@ -14,40 +14,39 @@ function buildSelectBox(column_defs, selector) {
     return selectBox;
 }
 
-const DataSummary = ({ data, summaryData, setSummaryData, column_defs }) => {
-    const summarize_by = buildSelectBox(column_defs, (c) => c.group_by == true)
-    var summarizeBy = summarize_by[0]; 
-    if (summaryData != null && summaryData.summarizedBy != null)
-        summarizeBy = summaryData.summarizedBy;
 
+
+const DataSummary = ({ data, summaryData, setSummaryData, column_defs }) => {
     function summarizeData(data, summaryColumn) {
         var summarizeBy = summaryColumn.value;
         var summaryData = { 'summarizedBy' : summaryColumn, 'data' : []}
         console.log("Summarizing by: " + summarizeBy)
         if (data == null)
             return;
-
+    
         var summaryMap = {}
+        var summaryKey;
         for (var dataRow of data) {
+            var column;
             summaryKey = dataRow[summarizeBy]
             if (summaryMap[summaryKey] == null) {
                 summaryMap[summaryKey] = { count: 0 }
-                for (var column of summary_columns)
+                for (column of summary_columns)
                     summaryMap[summaryKey][column] = 0
             }
-
+    
             summaryMap[summaryKey].count++;
-            for (var column of summary_columns)
+            for (column of summary_columns)
                 summaryMap[summaryKey][column] += dataRow[column];
         }
-
+    
         // now the summary map will look like:
         // { { country : { count : x, column1 : value, column2: value }}, ...}
         // we want to convert it to:
         // { summarizedBy : { key, value }, data : [ { country : value, count : count, column1 : value, column2 : value ]}}
         var summaryRows = [];
         var rowCount = 0;
-        for (var summaryKey in summaryMap) {
+        for (summaryKey in summaryMap) {
             var summaryObject = summaryMap[summaryKey];
             var summaryRow = { index : rowCount++, count : summaryObject.count }
             summaryRow[summarizeBy] = summaryKey; 
@@ -60,7 +59,7 @@ const DataSummary = ({ data, summaryData, setSummaryData, column_defs }) => {
             }
             summaryRows.push(summaryRow);
         }
-
+    
         summaryData.data = summaryRows;
         return summaryData;
     }
@@ -69,9 +68,14 @@ const DataSummary = ({ data, summaryData, setSummaryData, column_defs }) => {
         var summarizedData = summarizeData(data, summaryColumn)
         setSummaryData( summarizedData )
     }
+    
+    const summarize_by = buildSelectBox(column_defs, (c) => c.group_by === true)
+    var summarizeBy = summarize_by[0]; 
+    if (summaryData != null && summaryData.summarizedBy != null)
+        summarizeBy = summaryData.summarizedBy;
 
+    
     function updateSummary(e) {
-        console.log(e)
         summarizeBy = e;
         summarize(data, e);
     }
