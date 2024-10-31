@@ -13,6 +13,8 @@ export const column_defs = {
     state : { type : 'text', description : 'State',  group_by : true, filter_type : 'multi'},
     country : { type : 'text', description : 'Country',  group_by : true, filter_type : 'multi' },
     beer_style : { type : 'text', description : 'Style',  group_by : true, filter_type : 'multi' },
+    brewery_name : { type : 'text', description : 'Brewery Name' },
+    beer_name : { type : 'text', description : 'Beer Name' }
 }
 
 export function selectColumns(s) {

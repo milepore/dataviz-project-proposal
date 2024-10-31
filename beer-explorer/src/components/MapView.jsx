@@ -19,14 +19,16 @@ const MapView = ({ data }) => {
         setZoom(null);
     }
 
-    const ref = useRef();
+    const mapRef = useRef();
+    const tooltipRef = useRef();
+    
     useEffect(() => {
-        const svg = d3.select(ref.current)
+        const svg = d3.select(mapRef.current)
             .selectAll('svg')
             .data([null]).join('svg');
 
         svg.call(d3.zoom().on('zoom', (event) => {
-            console.log("ZOOM");
+            d3.selectAll('.nvtooltip').style('opacity', '0');
             setZoom(event.transform)
         }));
     }, [])
@@ -36,14 +38,14 @@ const MapView = ({ data }) => {
             return 
         }
 
-        const svg = d3.select(ref.current)
+        const svg = d3.select(mapRef.current)
             .selectAll('svg')
             .data([null]).join('svg');
 
         if (countries && data) {
             one(svg, 'g', 'zoomable')
                 .attr('transform', zoom)
-                .call(map, { countries, reviews : data });
+                .call(map, { countries, reviews : data, tooltipRef });
         }
     }, [countries, data, zoom]);
 
@@ -60,7 +62,8 @@ const MapView = ({ data }) => {
     }
 
     return <div>
-        <svg width={width} height={height} id="barchart" ref={ref} />
+        <svg width={width} height={height} id="mapview" ref={mapRef} />
+        <div id="tooltip" class="tooltip" ref={tooltipRef}/>
         <button onClick={resetMap}>Reset</button>
         </div>
 };
