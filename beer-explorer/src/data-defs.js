@@ -33,3 +33,5 @@ export function getNumericColumns() {
 export function getSelectColumns() {
     return selectColumns((s) => s.filter_type === "multi")
 }
+
+export default column_defs;
