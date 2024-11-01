@@ -83,7 +83,7 @@ const DataForm = ({ setData, column_defs }) => {
 
     if (categoryData == null) {
         d3.csv(
-            "https://raw.githubusercontent.com/milepore/dataviz-project-proposal/refs/heads/master/beer-explorer/data/beer-style-families.csv"
+            "../data/beer-style-families.csv"
         ).then(function (csvData) {
             setCategoryData(csvData)
         });
@@ -91,7 +91,7 @@ const DataForm = ({ setData, column_defs }) => {
 
     if (rawData == null) {
         d3.csv(
-            "https://raw.githubusercontent.com/milepore/dataviz-project-proposal/refs/heads/master/individual_beers.csv"
+            "../data/individual_beers.csv"
         ).then(function (csvData) {
             var rawData=processData(csvData, categoryData)
             setRawData(rawData);
