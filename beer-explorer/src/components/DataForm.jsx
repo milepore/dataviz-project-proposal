@@ -7,41 +7,8 @@ import { getNumericColumns, getSelectColumns } from '../data-defs';
 const DataForm = ({ setData, column_defs }) => {
     const [rawData, setRawData] = useState(null)
     const [categoryData, setCategoryData] = useState(null)
-    const [filter, setFilter] = useState({})
-    const numeric_colums = getNumericColumns(column_defs);
     const select_columns = getSelectColumns(column_defs);
-
-    function filterData(rawData, filter) {
-        if (rawData == null || filter == null)
-            return;
-
-        var filteredData = []
-        if (filter == null)
-            return rawData;
-
-        var csvData = rawData.csvData;
-
-        for (var dataRow of csvData) {
-            var includeRow = true;
-
-            // filter each column
-            for (var column in column_defs) {
-                if (column_defs[column].filter_type === "multi") {
-                    if ((filter[column] != null)&&(filter[column].length != 0)) {
-                        const filterValues = filter[column].map((e) => e.value);
-                        if (!filterValues.includes(dataRow[column]))
-                            includeRow = false
-                    }
-                }
-            }
-
-            if (includeRow) {
-                filteredData.push(dataRow)
-            }
-        }
-
-        setData(filteredData)
-    }
+    const numeric_colums = getNumericColumns(column_defs);
 
     function processData(csvData, families) {
         var columnValues = {}
@@ -93,62 +60,13 @@ const DataForm = ({ setData, column_defs }) => {
         d3.csv(
             "../data/individual_beers.csv"
         ).then(function (csvData) {
+            setRawData(csvData);
             var rawData=processData(csvData, categoryData)
-            setRawData(rawData);
+            console.log("setting data..");
+            setData(rawData);
         });
     }
 
-    function getFieldValues(fieldName) {
-        if (rawData == null)
-            return [];
-        var options = rawData.columnValues[fieldName]
-        if (options == null)
-            options = []
-        return options;
-    }
-
-    function getFilterValue(fieldName) {
-        var value = filter[fieldName]
-        if (value == null)
-            return ""
-        return value;
-    }
-
-    function updateFilter(fieldName, value) {
-        console.log('filter ' + fieldName + ' to ' + value)
-
-        var newFilter = { ...filter};
-        newFilter[fieldName] = value;
-        setFilter(newFilter)
-    }
-
-    function updateMultiFilter(fieldName, e) {
-        updateFilter(fieldName, e);
-    }
-
-    function makeFilterElement( [ fieldName, fieldDef ] ) {
-        console.log(fieldDef)
-        if (fieldDef.filter_type === 'multi') {
-            // get a list of all value for this field
-            var options = getFieldValues(fieldName).map((d) => {return { value : d, label : d}});
-            // create select
-            return <label>{column_defs[fieldName].description}: <Select size={5} name={fieldName} isMulti={true} value={getFilterValue(fieldName)} onChange={(e) => updateMultiFilter(fieldName, e)} options={options}>
-            </Select></label>
-        }
-    }
-
-    if (filter == null) {
-        updateFilter('country', '')
-    }
-
-    useEffect(() => { filterData(rawData, filter) }, [rawData, filter]);
-
-    return (
-        <form>
-            {
-                Object.entries(column_defs).map((item) => makeFilterElement(item))
-            }
-        </form>
-    )
+    return (<div id="datadiv"/>)
 }
 export default DataForm;

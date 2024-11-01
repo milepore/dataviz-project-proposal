@@ -88,13 +88,11 @@ const DataSummary = ({ data, summaryData, setSummaryData, column_defs }) => {
 
     console.log(summarize_by);
     return (
-        <form>
             <label>Summarize By:
                 <Select options ={summarize_by}
                     value={summarizeBy}
                     onChange={updateSummary}/>
             </label>
-        </form>
     )
 }
 export default DataSummary;

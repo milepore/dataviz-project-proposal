@@ -10,7 +10,7 @@ const worldAtlasURL =
 
 const MapView = ({ data }) => {
     const width = 900;
-    const height = 600;
+    const height = 468;
 
     const [ countries, setCountries ] = useState();
     const [ zoom, setZoom ] = useState();
@@ -63,9 +63,9 @@ const MapView = ({ data }) => {
 
     return <div>
         <svg width={width} height={height} id="mapview" ref={mapRef} />
-        <div id="tooltip" class="tooltip" ref={tooltipRef}/>
+        <div id="tooltip" className="tooltip" ref={tooltipRef}/>
         <button onClick={resetMap}>Reset</button>
-        </div>
+    </div>
 };
 
 export default MapView;

@@ -84,12 +84,12 @@ const ParallelCoordinates = (
         // Only recompute the filtered data
         // when `brushedIntervals` changes,
         // but not when width and height change.
-        //const memoize = Memoize(selection);
-        //const filteredData = memoize(() => {
+        const memoize = Memoize(selection);
+        const filteredData = memoize(() => {
             // Uncomment to verify when recomputation happens
             // console.log('recomputing filtered data');
             //return data.filter((d) => {
-            const filteredData = data.filter((d) => {
+            return data.filter((d) => {
                 for (const column of columns) {
                     const interval = brushedIntervals[column];
                     if (interval) {
@@ -102,8 +102,7 @@ const ParallelCoordinates = (
                 }
                 return true;
             });
-        // );
-        // }, [data, columns, brushedIntervals]);
+        }, [data, columns, brushedIntervals]);
 
         // Set up a <g> to contain the marks,
         // so that the layering is consistent

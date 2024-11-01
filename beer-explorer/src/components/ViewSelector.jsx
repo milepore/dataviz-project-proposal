@@ -3,16 +3,21 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import BarChart from './BarChart';
 import MapView from './MapView';
 import DataSummary from './DataSummary';
+import DataFilter from './DataFilter';
 import ColumnPicker from './ColumnPicker';
 import ParallelCoordinates from './ParallelCoordinates';
-import column_defs from '../data-defs';
 import { useState } from "react";
 import 'react-tabs/style/react-tabs.css';
 
 const ViewSelector = ({ data, column_defs }) => {
     const [ summaryData, setSummaryData ] = useState()
-    const [columns, setColumns] = useState([])
+    const [ filteredData, setFilteredData ] = useState()
 
+    const defaultColumns= [ 'review_count', 'review_overall', 'beer_abv', 'family' ]
+    const defaultValue = defaultColumns.map((d) => { 
+        return {value:d, label:column_defs[d].description}
+    });
+    const [columns, setColumns] = useState(defaultValue)
 
     return (
         <Tabs>
@@ -23,15 +28,24 @@ const ViewSelector = ({ data, column_defs }) => {
         </TabList>
 
         <TabPanel>
-        <MapView data={data}/>
+        <MapView data={filteredData}/>
+        <form>
+        <DataFilter data={data} setFilteredData={setFilteredData} column_defs={column_defs}/>
+        </form>
         </TabPanel>
         <TabPanel>
         <BarChart summaryData={summaryData} column_defs={column_defs}/>
-        <DataSummary data={data} summaryData={summaryData} setSummaryData={setSummaryData} column_defs={column_defs}/>
+        <form>
+        <DataSummary data={filteredData} summaryData={summaryData} setSummaryData={setSummaryData} column_defs={column_defs}/>
+        <DataFilter data={data} setFilteredData={setFilteredData} column_defs={column_defs}/>
+        </form>
         </TabPanel>
         <TabPanel>
-        <ParallelCoordinates data={data} columns={columns.map((d)=>d.value)} columnDefs={column_defs} colorValue={(d)=>d.family} idValue={(d)=>d.beer_id}/>
+        <ParallelCoordinates data={filteredData} columns={columns.map((d)=>d.value)} columnDefs={column_defs} colorValue={(d)=>d.family} idValue={(d)=>d.beer_id}/>
+        <form>
         <ColumnPicker column_defs={column_defs} columns={columns} setColumns={setColumns}/>
+        <DataFilter data={data} setFilteredData={setFilteredData} column_defs={column_defs}/>
+        </form>
         </TabPanel>
     </Tabs>
     )

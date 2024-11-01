@@ -14,9 +14,7 @@ const ColumnPicker = ({ column_defs, columns, setColumns }) => {
     }
     
     return (
-        <form>
             <label>Columns: <Select size={5} name={'columns'} isMulti={true} onChange={setColumns} value={columns} options={options}/></label>
-        </form>
     )
 }
 export default ColumnPicker;

@@ -1,5 +1,5 @@
 import {
-    geoNaturalEarth1,
+    geoEquirectangular,
     geoPath,
     geoGraticule,
     scaleLinear,
@@ -8,7 +8,6 @@ import {
   import { Memoize } from 'd3-rosetta';
   
   const showTooltip = function (tooltipRef, event, html) {
-    console.log(html);
     const tooltipDiv = tooltipRef.current;
     if (tooltipDiv) {
       select(tooltipDiv).transition().duration(200).style("opacity", 0.9);
@@ -49,7 +48,7 @@ function tooltipHTML(d) {
     const memo = Memoize(selection);
 
     memo(() => {
-      const projection = geoNaturalEarth1()
+      const projection = geoEquirectangular()
       const path = geoPath(projection);
       const graticule = geoGraticule();
     

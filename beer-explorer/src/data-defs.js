@@ -9,7 +9,7 @@ export const column_defs = {
     review_overall : { type : 'numeric', hidden : false, description : 'Avg Review', range : [ 0, 5 ], summary : true },
     beer_style_id: { type : 'numeric', hidden : true },
     review_count : { type : 'numeric', hidden : false, description : 'Number of Reviews', summary : true },
-    family : { type : 'text' , description : 'Style Family', group_by : true },
+    family : { type : 'text' , description : 'Style Family', group_by : true, filter_type : 'multi' },
     state : { type : 'text', description : 'State',  group_by : true, filter_type : 'multi'},
     country : { type : 'text', description : 'Country',  group_by : true, filter_type : 'multi' },
     beer_style : { type : 'text', description : 'Style',  group_by : true, filter_type : 'multi' },
