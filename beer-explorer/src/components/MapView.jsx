@@ -76,7 +76,10 @@ const MapView = ({ data, column_defs, columnRanges, columnValues }) => {
         }
 
         one(svg, 'g', 'colorscale')
-            .call(colorLegend, { colorScale : column_defs[colorColumn].colorScale });
+            .call(colorLegend, {
+                colorScale : column_defs[colorColumn].colorScale,
+                x : width-150, y : height-200,
+                colorLegendLabel : column_defs[colorColumn].description });
 
     }, [countries, data, zoom, colorColumn]);
 
