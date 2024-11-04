@@ -19,6 +19,14 @@ const ViewSelector = ({ data, column_defs }) => {
     });
     const [columns, setColumns] = useState(defaultValue)
 
+    var columnRanges = null;
+    if ((data != null) && (data.columnRanges != null))
+        columnRanges = data.columnRanges;
+
+    var columnValues = null;
+    if ((data != null) && (data.columnValues != null))
+        columnValues = data.columnValues;
+
     return (
         <Tabs>
         <TabList>
@@ -28,7 +36,7 @@ const ViewSelector = ({ data, column_defs }) => {
         </TabList>
 
         <TabPanel>
-        <MapView data={filteredData}/>
+        <MapView data={filteredData} column_defs={column_defs} columnRanges={columnRanges} columnValues={columnValues}/>
         <form>
         <DataFilter data={data} setFilteredData={setFilteredData} column_defs={column_defs}/>
         </form>
