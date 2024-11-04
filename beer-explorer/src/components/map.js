@@ -2,7 +2,6 @@ import {
     geoEquirectangular,
     geoPath,
     geoGraticule,
-    scaleLinear,
     select
   } from 'd3';
   import { Memoize } from 'd3-rosetta';
@@ -13,7 +12,6 @@ import {
       select(tooltipDiv).transition().duration(200).style("opacity", 0.9);
       select(tooltipDiv)
         .html(html)
-        // TODO: some logic when the tooltip could go out from container
         .style("left", event.pageX + "px")
         .style("top", event.pageY - 28 + "px");
     }
@@ -26,23 +24,14 @@ import {
     }
   };
 
-function tooltipHTML(d) {
-  var html = `<div><strong>Brewery Name:</strong> ${d['brewery_name']}</div>
-      <div><strong>Beer Name:</strong> ${d['beer_name']}</div>
-      <div><strong>Style:</strong> ${d['beer_style']}</div>
-      <div><strong>ABV:</strong> ${d['beer_abv']}</div>
-      <div><strong>Rating:</strong> ${d['review_overall']}</div>
-      <div><strong>Num Reviews:</strong> ${d['review_count']}</div>
-    `
-  return html;
-}
-
   export const map = (
     selection,
     {
       countries,
       reviews,
-      tooltipRef
+      colorFunction,
+      tooltipRef,
+      tooltipHTML
     },
   ) => {
     const memo = Memoize(selection);
@@ -51,8 +40,20 @@ function tooltipHTML(d) {
       const projection = geoEquirectangular()
       const path = geoPath(projection);
       const graticule = geoGraticule();
+
+      const gMap = selection
+        .selectAll('g.map')
+        .data([null])
+        .join('g')
+        .attr('class','map');
+
+      const gData = selection
+        .selectAll('g.data')
+        .data([null])
+        .join('g')
+        .attr('class','data');
     
-      selection
+      gMap
         .selectAll('path.graticule')
         .data([null])
         .join('path')
@@ -62,25 +63,21 @@ function tooltipHTML(d) {
         .attr('stroke', '#BBB')
         .attr('stroke-width', 0.2);
 
-      selection
+      gMap
         .selectAll('path.country')
         .data(countries.features)
         .join('path')
         .attr('d', path)
         .attr('class', 'country');
     
-      var colors = scaleLinear()
-        .domain([0, 5])
-        .range(['red', 'green']);
-    
       for (const d of reviews) {
         const [x, y] = projection([d.lng, d.lat]);
         d.x = x;
         d.y = y;
-        d.color = colors(d.review_overall);
+        d.color = colorFunction(d);
       }
     
-      var circle = selection
+      var circle = gData
         .selectAll('circle.beer')
         .data(reviews)
         .join('circle')
@@ -93,7 +90,7 @@ function tooltipHTML(d) {
         .on('mouseover', (event, d) => showTooltip(tooltipRef, event, tooltipHTML(d)))
         .on('mouseout', (event, d) => hideTooltip(tooltipRef))
     
-      selection
+      gMap
         .selectAll('path.outline')
         .data([null])
         .join('path')
@@ -102,6 +99,6 @@ function tooltipHTML(d) {
         .attr('fill', 'none')
         .attr('stroke', 'black')
         .attr('stroke-width', 1);
-    }, [countries, reviews]);
+    }, [countries, reviews, colorFunction]);
   }
   

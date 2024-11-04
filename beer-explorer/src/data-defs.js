@@ -1,15 +1,16 @@
+import * as d3 from "d3";
 
 export const column_defs = {
     index : { type : 'numeric', hidden : true },
     brewery_id : { type : 'numeric', hidden : true },
-    beer_abv : { type : 'numeric', hidden : false, description : 'ABV %', summary : true },
+    beer_abv : { type : 'numeric', hidden : false, description : 'ABV %', summary : true, colorScale : d3.scaleSequential(d3.interpolateOranges) },
     beer_beerid  : { type : 'numeric', hidden : true },
     lat: { type : 'numeric', hidden : false, description : 'Latitude' },
     lng : { type : 'numeric', hidden : false, description : 'Longitude' },
-    review_overall : { type : 'numeric', hidden : false, description : 'Avg Review', range : [ 0, 5 ], summary : true },
+    review_overall : { type : 'numeric', hidden : false, description : 'Avg Review', range : [ 0, 5 ], summary : true, colorScale : d3.scaleSequential(d3.interpolateRdYlGn) },
     beer_style_id: { type : 'numeric', hidden : true },
-    review_count : { type : 'numeric', hidden : false, description : 'Number of Reviews', summary : true },
-    family : { type : 'text' , description : 'Style Family', group_by : true, filter_type : 'multi' },
+    review_count : { type : 'numeric', hidden : false, description : 'Number of Reviews', summary : true, colorScale : d3.scaleSequentialPow(d3.interpolatePurples).exponent(.1) },
+    family : { type : 'text' , description : 'Style Family', group_by : true, filter_type : 'multi', colorScale : d3.scaleOrdinal(d3.schemePaired) },
     state : { type : 'text', description : 'State',  group_by : true, filter_type : 'multi'},
     country : { type : 'text', description : 'Country',  group_by : true, filter_type : 'multi' },
     beer_style : { type : 'text', description : 'Style',  group_by : true, filter_type : 'multi' },

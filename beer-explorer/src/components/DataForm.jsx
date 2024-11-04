@@ -12,6 +12,7 @@ const DataForm = ({ setData, column_defs }) => {
 
     function processData(csvData, families) {
         var columnValues = {}
+        var columnRanges = {}
 
         if (csvData == null || families == null)
             return;
@@ -24,9 +25,22 @@ const DataForm = ({ setData, column_defs }) => {
             columnValues[c] = [];
         }
 
+        for (c of numeric_colums) {
+            if (column_defs[c].range != null)
+                columnRanges[c] = [... column_defs[c].range]; // copy it, don't just assign
+            else
+                columnRanges[c] = [0,0];
+        }
+
         for (const d of csvData) {
             for (const column of numeric_colums) {
                 d[column] = +d[column];
+                if (d[column] < columnRanges[column][0]) {
+                    columnRanges[column][0] = d[column];
+                }
+                if (d[column] > columnRanges[column][1]) {
+                    columnRanges[column][1] = d[column];
+                }
             }
             d['family'] = famMap[d.beer_style];
             for (c of select_columns) {
@@ -43,7 +57,8 @@ const DataForm = ({ setData, column_defs }) => {
         
         return {
             csvData : csvData,
-            columnValues : columnValues
+            columnValues : columnValues,
+            columnRanges : columnRanges
         };
     }
 
