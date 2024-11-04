@@ -135,29 +135,29 @@ The downside to this is that the filter doesn't have a ton to do with the actual
 ## Milestones and Live Progress
 
 * Week 9 - Map View of World Reviews
-** Crated map of world reviews, with pan and zoom [https://vizhub.com/milepore/beer_reviews_on_map]
-** Updated data to include style families [https://vizhub.com/milepore/beer_ratings_and_locations]
-** Updated data source to include # reviews
+    * Crated map of world reviews, with pan and zoom [https://vizhub.com/milepore/beer_reviews_on_map]
+    * Updated data to include style families [https://vizhub.com/milepore/beer_ratings_and_locations]
+    * Updated data source to include # reviews
 * Week 10 - Migrated (per professor's suggestion) to react application instead of Vizhub
-** Got filter view working - for multi-select (state, country, style) fields
-** Got map ported over to react - that was a bit of a pain
-*** Getting the various pan/zoom to work with react state models was challenging, but works now
-** Got summarization filter working for non-map views
-** Got Graph view looking at real data
+    * Got filter view working - for multi-select (state, country, style) fields
+    * Got map ported over to react - that was a bit of a pain
+        * Getting the various pan/zoom to work with react state models was challenging, but works now
+    * Got summarization filter working for non-map views
+    * Got Graph view looking at real data
 * Week 11 - Implement Parallel Coordinate View
-** Parallel Coordinate view really works well with color - picking how to group color will be a useful enhancement
-*** Make it possible to pick which of our dimensions show up in the chart
-** Also implement color picker with map view
-** Restructure code to remove the filter and data loading components
-** Move from create-react-app to VITE for development
-** Added tooltip to map view to allow looking at individual beer ratings
-* Change color on map view and on Parallel Coordinates to be based on field picker
-** For fields that are sequential, use a better color map
-** For categorical fields (style family for example) use a rainbow or segment saturated rainbow or something
+    * Parallel Coordinate view really works well with color - picking how to group color will be a useful enhancement
+        * Make it possible to pick which of our dimensions show up in the chart
+    * Also implement color picker with map view
+    * Restructure code to remove the filter and data loading components
+    * Move from create-react-app to VITE for development
+    * Added tooltip to map view to allow looking at individual beer ratings
+    * Change color on map view and on Parallel Coordinates to be based on field picker
+        * For fields that are sequential, use a better color map
+        * For categorical fields (style family for example) use a rainbow or segment saturated rainbow or something
 * Week 12 - Enhance data views
-** Add axis pickers to graph view
-** Add data sorting for graph view
-** Add more filters to the filter view
+    * Add axis pickers to graph view
+    * Add data sorting for graph view
+    * Add more filters to the filter view
 * Week 13 - Buffer, tuning, look&feel / CSS
 * Week 14 - Buffer / finalize / write paper  
 
