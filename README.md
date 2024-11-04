@@ -144,10 +144,20 @@ The downside to this is that the filter doesn't have a ton to do with the actual
 *** Getting the various pan/zoom to work with react state models was challenging, but works now
 ** Got summarization filter working for non-map views
 ** Got Graph view looking at real data
-* Week 11 - Enhance data views
+* Week 11 - Implement Parallel Coordinate View
+** Parallel Coordinate view really works well with color - picking how to group color will be a useful enhancement
+*** Make it possible to pick which of our dimensions show up in the chart
+** Also implement color picker with map view
+** Restructure code to remove the filter and data loading components
+** Move from create-react-app to VITE for development
+** Added tooltip to map view to allow looking at individual beer ratings
+* Change color on map view and on Parallel Coordinates to be based on field picker
+** For fields that are sequential, use a better color map
+** For categorical fields (style family for example) use a rainbow or segment saturated rainbow or something
+* Week 12 - Enhance data views
 ** Add axis pickers to graph view
 ** Add data sorting for graph view
-* Week 12 - Experiment with Parallel Coordinate View & Add additional filter fields
+** Add more filters to the filter view
 * Week 13 - Buffer, tuning, look&feel / CSS
 * Week 14 - Buffer / finalize / write paper  
 
