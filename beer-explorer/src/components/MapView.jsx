@@ -54,13 +54,7 @@ const MapView = ({ data, column_defs, columnRanges, columnValues }) => {
             return 
         }
 
-        console.log(colorColumn);
         const colors = column_defs[colorColumn].colorScale
-        if (column_defs[colorColumn].type == "numeric")
-            colors.domain(columnRanges[colorColumn]);
-        else
-            colors.domain(columnValues[colorColumn]);
-
         const colorFunction = (d) => {
             return colors(d[colorColumn])
         }
@@ -68,6 +62,7 @@ const MapView = ({ data, column_defs, columnRanges, columnValues }) => {
         const svg = d3.select(mapRef.current)
             .selectAll('svg')
             .data([null]).join('svg');
+
 
         if (countries && data) {
             one(svg, 'g', 'zoomable')

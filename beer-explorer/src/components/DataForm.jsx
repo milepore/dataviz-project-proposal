@@ -54,7 +54,17 @@ const DataForm = ({ setData, column_defs }) => {
         for (c in columnValues) {
             columnValues[c] = columnValues[c].sort();
         }
-        
+
+        // Now lets set the ranges for our color scales
+        for (c in column_defs) {
+            if (column_defs[c].colorScale != null) {
+                if (column_defs[c].type == "numeric")
+                    column_defs[c].colorScale.domain(columnRanges[c]);
+                else
+                    column_defs[c].colorScale.domain(columnValues[c]);
+            }
+        }
+
         return {
             csvData : csvData,
             columnValues : columnValues,
@@ -77,7 +87,6 @@ const DataForm = ({ setData, column_defs }) => {
         ).then(function (csvData) {
             setRawData(csvData);
             var rawData=processData(csvData, categoryData)
-            console.log("setting data..");
             setData(rawData);
         });
     }

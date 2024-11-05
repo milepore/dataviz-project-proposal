@@ -49,7 +49,7 @@ const ViewSelector = ({ data, column_defs }) => {
         </form>
         </TabPanel>
         <TabPanel>
-        <ParallelCoordinates data={filteredData} columns={columns.map((d)=>d.value)} columnDefs={column_defs} colorValue={(d)=>d.family} idValue={(d)=>d.beer_id}/>
+        <ParallelCoordinates data={filteredData} columns={columns.map((d)=>d.value)} columnDefs={column_defs} idValue={(d)=>d.beer_id}/>
         <form>
         <ColumnPicker column_defs={column_defs} columns={columns} setColumns={setColumns}/>
         <DataFilter data={data} setFilteredData={setFilteredData} column_defs={column_defs}/>

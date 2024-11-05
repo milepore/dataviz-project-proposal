@@ -16,6 +16,7 @@ import {
     axisBottom,
   } from 'd3';
   import { one, Memoize } from 'd3-rosetta';
+  import ColorSelector from './ColorSelector';
 
   // Shifts the hue of a given color.
 const hueShift = (hueDelta) => (color) => {
@@ -33,7 +34,6 @@ const ParallelCoordinates = (
       data,
       columns,
       columnDefs,
-      colorValue,
       idValue,
       width = 900,
       height = 600,
@@ -45,6 +45,7 @@ const ParallelCoordinates = (
     }) => {
     
     const [ brushedIntervals, setBrushedIntervals ] = useState({});
+    const [ colorColumn, setColorColumn ] = useState('family');
 
     const updateBrushedInterval = ({column, interval}) => {
         setBrushedIntervals( { ... brushedIntervals, [column] : interval, })
@@ -77,9 +78,10 @@ const ParallelCoordinates = (
                     .range([height - marginBottom, marginTop]);
         }
     
-        const colorScale = scaleOrdinal()
-            .domain(data.map(colorValue))
-            .range(schemeCategory10.map(hueShift(-74)));
+        const colorScale = columnDefs[colorColumn].colorScale;
+        const colorValue = (d) => { 
+            return d[colorColumn];
+        }
     
         // Only recompute the filtered data
         // when `brushedIntervals` changes,
@@ -87,8 +89,6 @@ const ParallelCoordinates = (
         const memoize = Memoize(selection);
         const filteredData = memoize(() => {
             // Uncomment to verify when recomputation happens
-            // console.log('recomputing filtered data');
-            //return data.filter((d) => {
             return data.filter((d) => {
                 for (const column of columns) {
                     const interval = brushedIntervals[column];
@@ -102,7 +102,7 @@ const ParallelCoordinates = (
                 }
                 return true;
             });
-        }, [data, columns, brushedIntervals]);
+        }, [data, columns, brushedIntervals, colorColumn]);
 
         // Set up a <g> to contain the marks,
         // so that the layering is consistent
@@ -243,7 +243,6 @@ const ParallelCoordinates = (
     }, [data,
         columns,
         columnDefs,
-        colorValue,
         idValue,
         width,
         height,
@@ -252,9 +251,15 @@ const ParallelCoordinates = (
         marginRight,
         marginBottom,
         marginLeft,
-        brushedIntervals] )
+        brushedIntervals,
+        colorColumn] )
 
-    return <svg width={width} height={height} id="parallel-chart" ref={ref} />;
+    return <div className="parallel-chart">
+        <svg width={width} height={height} id="parallel-chart" ref={ref} />
+        <label>Color By:
+        <ColorSelector column_defs={columnDefs} colorColumn={colorColumn} setColorColumn={(d) => {setColorColumn(d.target.value)}}/>
+        </label>
+        </div>;
 };
 
 export default ParallelCoordinates;

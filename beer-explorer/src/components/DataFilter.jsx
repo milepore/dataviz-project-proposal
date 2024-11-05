@@ -55,8 +55,6 @@ const DataFilter = ({ data, setFilteredData, column_defs }) => {
     }
 
     function updateFilter(fieldName, value) {
-        console.log('filter ' + fieldName + ' to ' + value)
-
         var newFilter = { ...filter};
         newFilter[fieldName] = value;
         setFilter(newFilter)
@@ -67,7 +65,6 @@ const DataFilter = ({ data, setFilteredData, column_defs }) => {
     }
 
     function makeFilterElement( [ fieldName, fieldDef ] ) {
-        console.log(fieldDef)
         if (fieldDef.filter_type === 'multi') {
             // get a list of all value for this field
             var options = getFieldValues(fieldName).map((d) => {return { value : d, label : d}});

@@ -20,7 +20,6 @@ const DataSummary = ({ data, summaryData, setSummaryData, column_defs }) => {
     function summarizeData(data, summaryColumn) {
         var summarizeBy = summaryColumn.value;
         var summaryData = { 'summarizedBy' : summaryColumn, 'data' : []}
-        console.log("Summarizing by: " + summarizeBy)
         if (data == null)
             return;
     
@@ -86,7 +85,6 @@ const DataSummary = ({ data, summaryData, setSummaryData, column_defs }) => {
 
     useEffect(() => { summarize(data, summarizeBy) }, [data, summarizeBy]);
 
-    console.log(summarize_by);
     return (
             <label>Summarize By:
                 <Select options ={summarize_by}
