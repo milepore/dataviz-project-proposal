@@ -75,7 +75,7 @@ const DataForm = ({ setData, column_defs }) => {
 
     if (categoryData == null) {
         d3.csv(
-            "../beer-style-families.csv"
+            "beer-style-families.csv"
         ).then(function (csvData) {
             setCategoryData(csvData)
         });
@@ -83,7 +83,7 @@ const DataForm = ({ setData, column_defs }) => {
 
     if (rawData == null) {
         d3.csv(
-            "../individual_beers.csv"
+            "individual_beers.csv"
         ).then(function (csvData) {
             setRawData(csvData);
             var rawData=processData(csvData, categoryData)
