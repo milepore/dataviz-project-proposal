@@ -32,6 +32,7 @@ export const colorLegend = (
     .attr('y', colorLegendLabelY)
     .attr('class', 'color-legend-label')
     .attr('font-family', 'sans-serif')
+    .style('user-select', 'none')
     .attr('font-size', 10)
     .text(colorLegendLabel);
     

@@ -7,7 +7,7 @@ const ColumnPicker = ({ column_defs, columns, setColumns }) => {
     var options = []
     if (column_defs !== null) {
         for (var column in column_defs) {
-            if (column_defs[column].description !== null) {
+            if ((column_defs[column].description != null)&&(column_defs[column].hidden!=true)) {
                 options.push( { value : column, label : column_defs[column].description })
             }
         }
