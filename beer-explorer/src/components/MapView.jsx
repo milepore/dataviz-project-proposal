@@ -4,6 +4,7 @@ import { colorLegend } from './colorLegend';
 import * as d3 from "d3";
 import { useEffect, useRef, useState } from "react";
 import { one } from 'd3-rosetta'
+import Button from '@mui/material/Button'
 import ColorSelector from './ColorSelector';
 
 
@@ -23,9 +24,13 @@ function tooltipHTML(d) {
 const worldAtlasURL =
   'https://unpkg.com/visionscarto-world-atlas@0.1.0/world/110m.json';
 
-const MapView = ({ data, column_defs, colorColumn = 'family' }) => {
-    const width = 900;
-    const height = 468;
+const MapView = ({ 
+    data,
+    column_defs,
+    colorColumn = 'family',
+    width = window.innerWidth,
+    height = width / 1.92
+}) => {
 
     const [ countries, setCountries ] = useState();
     const [ zoom, setZoom ] = useState();
@@ -66,7 +71,7 @@ const MapView = ({ data, column_defs, colorColumn = 'family' }) => {
         if (countries && data) {
             one(svg, 'g', 'zoomable')
                 .attr('transform', zoom)
-                .call(map, { countries, reviews : data, tooltipRef, tooltipHTML, colorFunction });
+                .call(map, { countries, reviews : data, tooltipRef, width, height, tooltipHTML, colorFunction });
         }
 
         one(svg, 'g', 'colorscale')
@@ -92,7 +97,7 @@ const MapView = ({ data, column_defs, colorColumn = 'family' }) => {
     return <div>
         <svg width={width} height={height} id="mapview" ref={mapRef} />
         <div id="tooltip" className="tooltip" ref={tooltipRef}/>
-        <button className="resetMap" onClick={resetMap}>Reset</button>
+        <Button className="resetMap" onClick={resetMap}>Reset</Button>
     </div>
 };
 

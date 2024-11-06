@@ -3,7 +3,7 @@ import * as d3 from "d3";
 export const column_defs = {
     index : { type : 'numeric', hidden : true },
     brewery_id : { type : 'numeric', hidden : true },
-    beer_abv : { type : 'numeric', hidden : false, description : 'ABV %', filter_type : 'range', range_step : '.1', summary : true, colorScale : d3.scaleSequential(d3.interpolateOranges) },
+    beer_abv : { type : 'numeric', hidden : false, description : 'ABV %', filter_type : 'range', range_step : .1, summary : true, colorScale : d3.scaleSequential(d3.interpolateOranges) },
     beer_beerid  : { type : 'numeric', hidden : true },
     lat: { type : 'numeric', hidden : false, description : 'Latitude' },
     lng : { type : 'numeric', hidden : false, description : 'Longitude' },

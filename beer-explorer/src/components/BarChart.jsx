@@ -2,7 +2,10 @@ import * as d3 from "d3";
 import { useEffect, useRef } from "react";
 
 
-const Barchart = ({ summaryData }) => {
+const Barchart = ({ summaryData,
+    width = window.innerWidth,
+    height = width / 1.5
+ }) => {
     function createAxes(
         svg,
         width,
@@ -109,9 +112,6 @@ const Barchart = ({ summaryData }) => {
 
         return [ yScaleLeft, yScaleRight, xScale ]
     }
-
-    const width = 900;
-    const height = 600;
 
     const ref = useRef();
     useEffect(() => {

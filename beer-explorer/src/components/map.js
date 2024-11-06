@@ -31,6 +31,8 @@ import {
       reviews,
       colorFunction,
       tooltipRef,
+      width,
+      height,
       tooltipHTML
     },
   ) => {
@@ -38,6 +40,10 @@ import {
 
     memo(() => {
       const projection = geoEquirectangular()
+        .scale(width / 1.75 / Math.PI) 
+        .rotate([0, 0]) 
+        .center([0, 0]) 
+        .translate([width / 2, height / 2])
       const path = geoPath(projection);
       const graticule = geoGraticule();
 

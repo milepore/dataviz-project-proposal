@@ -1,6 +1,7 @@
 import React from 'react'
 import Select from 'react-select'
 import { useEffect } from 'react';
+import { Autocomplete, TextField } from '@mui/material'
 
 const summary_columns = [ 'beer_abv', 'review_count', 'review_overall' ] 
 
@@ -16,7 +17,13 @@ function buildSelectBox(column_defs, selector) {
 
 
 
-const DataSummary = ({ data, summaryData, setSummaryData, column_defs }) => {
+const DataSummary = ({
+    data,
+    summaryData,
+    setSummaryData,
+    column_defs,
+    label="Summarize By:"
+ }) => {
     function summarizeData(data, summaryColumn) {
         var summarizeBy = summaryColumn.value;
         var summaryData = { 'summarizedBy' : summaryColumn, 'data' : []}
@@ -85,12 +92,20 @@ const DataSummary = ({ data, summaryData, setSummaryData, column_defs }) => {
 
     useEffect(() => { summarize(data, summarizeBy) }, [data, summarizeBy]);
 
-    return (
-            <label>Summarize By:
-                <Select options ={summarize_by}
-                    value={summarizeBy}
-                    onChange={updateSummary}/>
-            </label>
-    )
+    return <Autocomplete
+        id="summarizeBy"
+        options={summarize_by}
+        getOptionLabel={(option) => option.label}
+        value={summarizeBy}
+        onChange={(e,v) => updateSummary(v)}
+        renderInput={(params) => (
+        <TextField
+            {...params}
+            variant="standard"
+            label={label}
+        />
+        )}
+    />
+
 }
 export default DataSummary;

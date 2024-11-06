@@ -1,8 +1,13 @@
 import React from 'react'
 import * as d3 from "d3";
 import { useState, useEffect } from 'react';
-import Select from 'react-select';
-import RangeSlider from 'react-range-slider-input';
+
+import Autocomplete from '@mui/material/Autocomplete'
+import TextField from '@mui/material/TextField'
+import FormLabel from '@mui/material/FormLabel';
+
+// import RangeSlider from 'react-range-slider-input';
+import Slider from '@mui/material/Slider';
 import 'react-range-slider-input/dist/style.css';
 
 
@@ -26,7 +31,7 @@ const DataFilter = ({ data, setFilteredData, column_defs }) => {
             for (var column in column_defs) {
                 if (column_defs[column].filter_type === "multi") {
                     if ((filter[column] != null)&&(filter[column].length != 0)) {
-                        const filterValues = filter[column].map((e) => e.value);
+                        const filterValues = filter[column];
                         if (!filterValues.includes(dataRow[column]))
                             includeRow = false
                     }
@@ -56,10 +61,10 @@ const DataFilter = ({ data, setFilteredData, column_defs }) => {
         return options;
     }
 
-    function getFilterValue(fieldName) {
+    function getFilterValue(fieldName, defValue = "") {
         var value = filter[fieldName]
         if (value == null)
-            return ""
+            return defValue
         return value;
     }
 
@@ -79,23 +84,47 @@ const DataFilter = ({ data, setFilteredData, column_defs }) => {
 
     function makeFilterElement( [ fieldName, fieldDef ] ) {
         if (fieldDef.filter_type === 'multi') {
-            // get a list of all value for this field
-            var options = getFieldValues(fieldName).map((d) => {return { value : d, label : d}});
-            return <label>{column_defs[fieldName].description}: <Select size={5} name={fieldName} isMulti={true} value={getFilterValue(fieldName)} onChange={(e) => updateMultiFilter(fieldName, e)} options={options}>
-            </Select></label>
+            var options=getFieldValues(fieldName)
+            return <Autocomplete
+                multiple
+                id={"filter-" + fieldName}
+                options={options}
+                getOptionLabel={(option) => option}
+                value={getFilterValue(fieldName, [])}
+                onChange={(e,v) => updateMultiFilter(fieldName, v)}
+                renderInput={(params) => (
+                <TextField
+                    {...params}
+                    variant="standard"
+                    label={column_defs[fieldName].description}
+                />
+                )}
+                />
         } else if (fieldDef.filter_type === 'range') {
             // get a list of all value for this field
             if (data == null || data.columnRanges == null) return;
             const range = data.columnRanges[fieldName];
             var value = getFilterValue(fieldName);
             if (value == "") value = range;
-            return <label>{column_defs[fieldName].description} [{value[0]} - {value[1]}]:
-                <RangeSlider id={fieldName+"-range"} className="rangeFilter"
-                    min={range[0]} max={range[1]}
-                    value={value}
-                    step={column_defs[fieldName].range_step}
-                    onInput={(e) => updateRangeFilter(fieldName, e)}/>
-                </label>
+            // return <label>{column_defs[fieldName].description} [{value[0]} - {value[1]}]:
+            //     <RangeSlider id={fieldName+"-range"} className="rangeFilter"
+            //         min={range[0]} max={range[1]}
+            //         value={value}
+            //         step={column_defs[fieldName].range_step}
+            //         onInput={(e) => updateRangeFilter(fieldName, e)}/>
+            //     </label>
+            return <FormLabel>{column_defs[fieldName].description}
+                    <Slider
+                        getAriaLabel={() => column_defs[fieldName].description}
+                        value={value}
+                        step={column_defs[fieldName].range_step}
+                        min={range[0]} max={range[1]}
+                        onChange={(e,v) => updateRangeFilter(fieldName,v)}
+                        valueLabelDisplay="auto"
+                        // getAriaValueText={valuetext}
+                    />
+                </FormLabel>
+    
         }
     }
 

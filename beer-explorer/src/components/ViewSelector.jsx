@@ -1,5 +1,15 @@
 import React from 'react'
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
+import Tab from '@mui/material/Tab';
+import TabPanel from '@mui/lab/TabPanel';
+import TabList from '@mui/lab/TabList';
+import TabContext from '@mui/lab/TabContext';
+
+import Accordian from '@mui/material/Accordion'
+import AccordianSummary from '@mui/material/AccordionSummary'
+import AccordianDetails from '@mui/material/AccordionDetails'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
+
 import BarChart from './BarChart';
 import MapView from './MapView';
 import DataSummary from './DataSummary';
@@ -15,12 +25,17 @@ const ViewSelector = ({ data, column_defs }) => {
     const [ summaryData, setSummaryData ] = useState()
     const [ filteredData, setFilteredData ] = useState()
     const [ colorColumn, setColorColumn ] = useState('family');
+    const [ tab, setTab ] = useState('1');
 
     const defaultColumns= [ 'review_count', 'review_overall', 'beer_abv', 'family' ]
     const defaultValue = defaultColumns.map((d) => { 
         return {value:d, label:column_defs[d].description}
     });
     const [columns, setColumns] = useState(defaultValue)
+
+    const handleChange = (event, newValue) => {
+        setTab(newValue);
+    };
 
     var columnRanges = null;
     if ((data != null) && (data.columnRanges != null))
@@ -30,33 +45,38 @@ const ViewSelector = ({ data, column_defs }) => {
     if ((data != null) && (data.columnValues != null))
         columnValues = data.columnValues;
 
+    const dataFilter = (
+        <Accordian>
+        <AccordianSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="filter-content"
+            id="filter-header"
+        >Data Filter</AccordianSummary>
+        <AccordianDetails>
+            <DataFilter data={data} setFilteredData={setFilteredData} column_defs={column_defs}/>
+        </AccordianDetails>
+    </Accordian>
+    )
+
     return (
-        <Tabs>
-        <TabList>
-        <Tab>Beer Explorer</Tab>
-        <Tab>Bar Chart</Tab>
-        <Tab>Parallel Lines</Tab>
+        <TabContext value={tab}>
+        <TabList onChange={handleChange}>
+        <Tab label="Map View" value="1"/>
+        <Tab label="Bar Chart" value="2"/>
+        <Tab label="Parallel Lines" value="3"/>
         </TabList>
 
-        <TabPanel>
+        <TabPanel value="1">
         <MapView data={filteredData} column_defs={column_defs} colorColumn={colorColumn}/>
-        <form className="chart-form">
-        <label>Color By:
-        <ColorSelector column_defs={column_defs} colorColumn={colorColumn} setColorColumn={(d) => {setColorColumn(d.target.value)}}/>
-        </label>
-        </form>
-        <form className="filter-form">
-        <DataFilter data={data} setFilteredData={setFilteredData} column_defs={column_defs}/>
-        </form>
+        <ColorSelector column_defs={column_defs} colorColumn={colorColumn} setColorColumn={setColorColumn}/>
+        {dataFilter}
         </TabPanel>
-        <TabPanel>
+        <TabPanel value="2">
         <BarChart summaryData={summaryData} column_defs={column_defs}/>
-        <form>
         <DataSummary data={filteredData} summaryData={summaryData} setSummaryData={setSummaryData} column_defs={column_defs}/>
-        <DataFilter data={data} setFilteredData={setFilteredData} column_defs={column_defs}/>
-        </form>
+        {dataFilter}
         </TabPanel>
-        <TabPanel>
+        <TabPanel value="3">
         <ParallelCoordinates data={filteredData} columns={columns.map((d)=>d.value)} columnDefs={column_defs} idValue={(d)=>d.beer_id}/>
         <form>
         <label>Color By:
@@ -66,11 +86,9 @@ const ViewSelector = ({ data, column_defs }) => {
         <ColumnPicker column_defs={column_defs} columns={columns} setColumns={setColumns}/>
         </label>
         </form>
-        <form>
-        <DataFilter data={data} setFilteredData={setFilteredData} column_defs={column_defs}/>
-        </form>
+        {dataFilter}
         </TabPanel>
-    </Tabs>
+    </TabContext>
     )
 }
 

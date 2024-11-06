@@ -1,23 +1,40 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
-import Select from 'react-select';
+// import Select from 'react-select';
+import { FormControl, Select, InputLabel, MenuItem} from '@mui/material'
 
-const ColorSelector = ({ colorColumn, setColorColumn, column_defs }) => {
+const ColorSelector = ({
+    colorColumn,
+    setColorColumn,
+    column_defs,
+    label = "Color By:"
+}) => {
     var options = []
     if (column_defs !== null) {
         for (var column in column_defs) {
             if (column_defs[column].colorScale != null) {
-                options.push( <option key={column} value={column}>{column_defs[column].description}</option>)
+                options.push( <MenuItem key={column} value={column}>{column_defs[column].description}</MenuItem>)
             }
         }
     }
     
     return (
-        <select name={'color'} onChange={setColorColumn} value={colorColumn}>
-        {
-            options
-        }
-        </select>
+        <FormControl fullWidth>
+            <InputLabel id="color-by-label">{label}</InputLabel>
+            <Select
+                labelId="color-by-label"
+                id="color-by-select"
+                value={colorColumn}
+                label="Age"
+                onChange={(e) => setColorColumn(e.target.value)}>
+                {options}
+            </Select>
+        </FormControl>
+        // <select name={'color'} onChange={setColorColumn} value={colorColumn}>
+        // {
+        //     options
+        // }
+        // </select>
     );
 }
 export default ColorSelector;
