@@ -7,7 +7,7 @@ const ColorSelector = ({ colorColumn, setColorColumn, column_defs }) => {
     if (column_defs !== null) {
         for (var column in column_defs) {
             if (column_defs[column].colorScale != null) {
-                options.push( <option value={column}>{column_defs[column].description}</option>)
+                options.push( <option key={column} value={column}>{column_defs[column].description}</option>)
             }
         }
     }

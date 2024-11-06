@@ -6,12 +6,15 @@ import DataSummary from './DataSummary';
 import DataFilter from './DataFilter';
 import ColumnPicker from './ColumnPicker';
 import ParallelCoordinates from './ParallelCoordinates';
+import ColorSelector from './ColorSelector';
+
 import { useState } from "react";
 import 'react-tabs/style/react-tabs.css';
 
 const ViewSelector = ({ data, column_defs }) => {
     const [ summaryData, setSummaryData ] = useState()
     const [ filteredData, setFilteredData ] = useState()
+    const [ colorColumn, setColorColumn ] = useState('family');
 
     const defaultColumns= [ 'review_count', 'review_overall', 'beer_abv', 'family' ]
     const defaultValue = defaultColumns.map((d) => { 
@@ -36,8 +39,13 @@ const ViewSelector = ({ data, column_defs }) => {
         </TabList>
 
         <TabPanel>
-        <MapView data={filteredData} column_defs={column_defs} columnRanges={columnRanges} columnValues={columnValues}/>
-        <form>
+        <MapView data={filteredData} column_defs={column_defs} colorColumn={colorColumn}/>
+        <form className="chart-form">
+        <label>Color By:
+        <ColorSelector column_defs={column_defs} colorColumn={colorColumn} setColorColumn={(d) => {setColorColumn(d.target.value)}}/>
+        </label>
+        </form>
+        <form className="filter-form">
         <DataFilter data={data} setFilteredData={setFilteredData} column_defs={column_defs}/>
         </form>
         </TabPanel>
@@ -51,7 +59,14 @@ const ViewSelector = ({ data, column_defs }) => {
         <TabPanel>
         <ParallelCoordinates data={filteredData} columns={columns.map((d)=>d.value)} columnDefs={column_defs} idValue={(d)=>d.beer_id}/>
         <form>
+        <label>Color By:
+        <ColorSelector column_defs={column_defs} colorColumn={colorColumn} setColorColumn={(d) => {setColorColumn(d.target.value)}}/>
+        </label>
+        <label>Chart Columns:
         <ColumnPicker column_defs={column_defs} columns={columns} setColumns={setColumns}/>
+        </label>
+        </form>
+        <form>
         <DataFilter data={data} setFilteredData={setFilteredData} column_defs={column_defs}/>
         </form>
         </TabPanel>

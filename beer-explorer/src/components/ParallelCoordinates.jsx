@@ -16,7 +16,6 @@ import {
     axisBottom,
   } from 'd3';
   import { one, Memoize } from 'd3-rosetta';
-  import ColorSelector from './ColorSelector';
 
   // Shifts the hue of a given color.
 const hueShift = (hueDelta) => (color) => {
@@ -35,6 +34,7 @@ const ParallelCoordinates = (
       columns,
       columnDefs,
       idValue,
+      colorColumn = 'family',
       width = 900,
       height = 600,
       brushWidth = 70,
@@ -45,7 +45,6 @@ const ParallelCoordinates = (
     }) => {
     
     const [ brushedIntervals, setBrushedIntervals ] = useState({});
-    const [ colorColumn, setColorColumn ] = useState('family');
 
     const updateBrushedInterval = ({column, interval}) => {
         setBrushedIntervals( { ... brushedIntervals, [column] : interval, })
@@ -256,9 +255,6 @@ const ParallelCoordinates = (
 
     return <div className="parallel-chart">
         <svg width={width} height={height} id="parallel-chart" ref={ref} />
-        <label>Color By:
-        <ColorSelector column_defs={columnDefs} colorColumn={colorColumn} setColorColumn={(d) => {setColorColumn(d.target.value)}}/>
-        </label>
         </div>;
 };
 

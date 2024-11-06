@@ -23,13 +23,12 @@ function tooltipHTML(d) {
 const worldAtlasURL =
   'https://unpkg.com/visionscarto-world-atlas@0.1.0/world/110m.json';
 
-const MapView = ({ data, column_defs, columnRanges, columnValues }) => {
+const MapView = ({ data, column_defs, colorColumn = 'family' }) => {
     const width = 900;
     const height = 468;
 
     const [ countries, setCountries ] = useState();
     const [ zoom, setZoom ] = useState();
-    const [ colorColumn, setColorColumn ] = useState('family');
 
     function resetMap() {
         setZoom(null);
@@ -93,8 +92,7 @@ const MapView = ({ data, column_defs, columnRanges, columnValues }) => {
     return <div>
         <svg width={width} height={height} id="mapview" ref={mapRef} />
         <div id="tooltip" className="tooltip" ref={tooltipRef}/>
-        <ColorSelector column_defs={column_defs} colorColumn={colorColumn} setColorColumn={(d) => {setColorColumn(d.target.value)}}/>
-        <button onClick={resetMap}>Reset</button>
+        <button className="resetMap" onClick={resetMap}>Reset</button>
     </div>
 };
 

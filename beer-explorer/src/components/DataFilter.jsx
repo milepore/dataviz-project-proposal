@@ -81,7 +81,6 @@ const DataFilter = ({ data, setFilteredData, column_defs }) => {
         if (fieldDef.filter_type === 'multi') {
             // get a list of all value for this field
             var options = getFieldValues(fieldName).map((d) => {return { value : d, label : d}});
-            // create select
             return <label>{column_defs[fieldName].description}: <Select size={5} name={fieldName} isMulti={true} value={getFilterValue(fieldName)} onChange={(e) => updateMultiFilter(fieldName, e)} options={options}>
             </Select></label>
         } else if (fieldDef.filter_type === 'range') {
