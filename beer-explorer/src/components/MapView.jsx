@@ -81,7 +81,7 @@ const MapView = ({
                 x : width-150, y : height-200,
                 colorLegendLabel : column_defs[colorColumn].description });
 
-    }, [countries, data, zoom, colorColumn]);
+    }, [countries, states, data, zoom, colorColumn, width, height]);
 
     if (countries === undefined) {
         fetch(worldAtlasURL)

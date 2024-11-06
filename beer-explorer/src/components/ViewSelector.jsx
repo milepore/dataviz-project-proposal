@@ -21,6 +21,18 @@ import ColorSelector from './ColorSelector';
 import { useState } from "react";
 import 'react-tabs/style/react-tabs.css';
 
+function computeSize() {
+    const margin = 100;
+    var width = window.innerWidth - margin;
+    var height = width / 1.92;
+    const maxHeight = Math.min(window.innerHeight - 300, window.innerHeight*.75)
+    if (height > maxHeight) {
+        height = maxHeight;
+        width = height * 1.92;
+    }
+    return [width, height];
+}
+
 const ViewSelector = ({ data, column_defs }) => {
     const [ summaryData, setSummaryData ] = useState()
     const [ filteredData, setFilteredData ] = useState()
@@ -32,10 +44,13 @@ const ViewSelector = ({ data, column_defs }) => {
         return {value:d, label:column_defs[d].description}
     });
     const [columns, setColumns] = useState(defaultValue)
+    const [size, setSize] = useState(computeSize())
 
     const handleChange = (event, newValue) => {
         setTab(newValue);
     };
+
+    window.addEventListener('resize', () => { setSize(computeSize()) })
 
     var columnRanges = null;
     if ((data != null) && (data.columnRanges != null))
@@ -58,6 +73,8 @@ const ViewSelector = ({ data, column_defs }) => {
     </Accordian>
     )
 
+    const [ width, height ] = size;
+
     return (
         <TabContext value={tab}>
         <TabList onChange={handleChange}>
@@ -67,26 +84,44 @@ const ViewSelector = ({ data, column_defs }) => {
         </TabList>
 
         <TabPanel value="1">
-        <MapView data={filteredData} column_defs={column_defs} colorColumn={colorColumn}/>
-        <ColorSelector column_defs={column_defs} colorColumn={colorColumn} setColorColumn={setColorColumn}/>
-        {dataFilter}
+            <MapView
+                data={filteredData}
+                column_defs={column_defs}
+                colorColumn={colorColumn}
+                width={width}
+                height={height}
+            />
+            <ColorSelector column_defs={column_defs} colorColumn={colorColumn} setColorColumn={setColorColumn}/>
+            {dataFilter}
         </TabPanel>
         <TabPanel value="2">
-        <BarChart summaryData={summaryData} column_defs={column_defs}/>
-        <DataSummary data={filteredData} summaryData={summaryData} setSummaryData={setSummaryData} column_defs={column_defs}/>
-        {dataFilter}
+            <BarChart
+                summaryData={summaryData}
+                column_defs={column_defs}
+                width={width}
+                height={height}
+            />
+            <DataSummary data={filteredData} summaryData={summaryData} setSummaryData={setSummaryData} column_defs={column_defs}/>
+            {dataFilter}
         </TabPanel>
         <TabPanel value="3">
-        <ParallelCoordinates data={filteredData} columns={columns.map((d)=>d.value)} columnDefs={column_defs} idValue={(d)=>d.beer_id}/>
-        <form>
-        <label>Color By:
-        <ColorSelector column_defs={column_defs} colorColumn={colorColumn} setColorColumn={(d) => {setColorColumn(d.target.value)}}/>
-        </label>
-        <label>Chart Columns:
-        <ColumnPicker column_defs={column_defs} columns={columns} setColumns={setColumns}/>
-        </label>
-        </form>
-        {dataFilter}
+            <ParallelCoordinates
+                data={filteredData}
+                columns={columns.map((d)=>d.value)}
+                columnDefs={column_defs}
+                idValue={(d)=>d.beer_id}
+                width={width}
+                height={height}
+            />
+            <form>
+            <label>Color By:
+            <ColorSelector column_defs={column_defs} colorColumn={colorColumn} setColorColumn={(d) => {setColorColumn(d.target.value)}}/>
+            </label>
+            <label>Chart Columns:
+            <ColumnPicker column_defs={column_defs} columns={columns} setColumns={setColumns}/>
+            </label>
+            </form>
+            {dataFilter}
         </TabPanel>
     </TabContext>
     )
