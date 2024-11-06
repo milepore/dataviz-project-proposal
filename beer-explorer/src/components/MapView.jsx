@@ -19,7 +19,7 @@ function tooltipHTML(d) {
     return html;
 }
   
-  
+
 
 const worldAtlasURL =
   'https://unpkg.com/visionscarto-world-atlas@0.1.0/world/110m.json';
@@ -33,6 +33,7 @@ const MapView = ({
 }) => {
 
     const [ countries, setCountries ] = useState();
+    const [ states, setStates ] = useState();
     const [ zoom, setZoom ] = useState();
 
     function resetMap() {
@@ -71,7 +72,7 @@ const MapView = ({
         if (countries && data) {
             one(svg, 'g', 'zoomable')
                 .attr('transform', zoom)
-                .call(map, { countries, reviews : data, tooltipRef, width, height, tooltipHTML, colorFunction });
+                .call(map, { countries, states, reviews : data, tooltipRef, width, height, tooltipHTML, colorFunction });
         }
 
         one(svg, 'g', 'colorscale')
@@ -91,7 +92,20 @@ const MapView = ({
                 'countries',
             );
             setCountries(countries);
-        }, [countries, data]);
+        }, [countries]);
+    }
+
+    if (states === undefined) {
+        const statesURL = 'https://cdn.jsdelivr.net/npm/us-atlas@3.0.1/states-10m.json';
+        fetch(statesURL)
+            .then((response) => response.json())
+            .then((topoJSONData) => {
+            const states = topojson.feature(
+                topoJSONData,
+                'states',
+            );
+            setStates(states);
+        }, [states]);
     }
 
     return <div>

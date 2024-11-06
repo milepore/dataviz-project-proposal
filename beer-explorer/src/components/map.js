@@ -5,7 +5,7 @@ import {
     select
   } from 'd3';
   import { Memoize } from 'd3-rosetta';
-  
+
   const showTooltip = function (tooltipRef, event, html) {
     const tooltipDiv = tooltipRef.current;
     if (tooltipDiv) {
@@ -28,6 +28,7 @@ import {
     selection,
     {
       countries,
+      states,
       reviews,
       colorFunction,
       tooltipRef,
@@ -69,12 +70,25 @@ import {
         .attr('stroke', '#BBB')
         .attr('stroke-width', 0.2);
 
-      gMap
+        gMap
         .selectAll('path.country')
         .data(countries.features)
         .join('path')
         .attr('d', path)
-        .attr('class', 'country');
+        .attr('class', 'country')
+        .attr('fill','black')
+        .attr('stroke','#B0B0B0')
+        .attr('stroke-width','0.2')
+    
+        gMap
+        .selectAll('path.state')
+        .data(states.features)
+        .join('path')
+        .attr('d', path)
+        .attr('class', 'state')
+        .attr('fill','black')
+        .attr('stroke','#B0B0B0')
+        .attr('stroke-width','0.2')
     
       for (const d of reviews) {
         const [x, y] = projection([d.lng, d.lat]);
