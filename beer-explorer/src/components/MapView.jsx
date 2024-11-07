@@ -21,6 +21,11 @@ function tooltipHTML(d) {
 
 const worldAtlasURL = 'https://unpkg.com/visionscarto-world-atlas@0.1.0/world/110m.json';
 const statesURL = 'https://cdn.jsdelivr.net/npm/us-atlas@3.0.1/states-10m.json';
+const citiesURL =
+  'https://gist.githubusercontent.com/curran/a59ef43debb9fcfd38858d0be4f3b087/raw/a56bdbdb758eebf6a387d47e4d428258e5cb2abd/worldcitiesReduced.csv';
+const populationThresholdForLabels = 2500000;
+
+
 
 const MapView = ({ 
     data,
@@ -32,6 +37,7 @@ const MapView = ({
 
     const [ features, setFeatures ] = useState({});
     const [ zoom, setZoom2 ] = useState();
+    const [ cities, setCities ] = useState();
 
     // limit zooming out to 1.0 zoom, since 1.0 is the whole map
     function setZoom(z) {
@@ -75,7 +81,7 @@ const MapView = ({
         if (features['Countries'] && features['States'] && data) {
             one(svg, 'g', 'zoomable')
                 .attr('transform', zoom)
-                .call(map, { features, reviews : data, tooltipRef, width, height, tooltipHTML, colorFunction });
+                .call(map, { features, labels : cities, reviews : data, tooltipRef, width, height, tooltipHTML, colorFunction });
         }
 
         one(svg, 'g', 'colorscale')
@@ -84,7 +90,7 @@ const MapView = ({
                 x : width-150, y : height-200,
                 colorLegendLabel : column_defs[colorColumn].description });
 
-    }, [features, data, zoom, colorColumn, width, height]);
+    }, [features, cities, data, zoom, colorColumn, width, height]);
 
     if (features['Countries'] === undefined) {
         fetch(worldAtlasURL)
@@ -114,6 +120,19 @@ const MapView = ({
                 ...features
             });;
         }, [features]);
+    }
+
+    if (cities === undefined) {
+        d3.csv(citiesURL, (d, i) => {
+            d.lat = +d.lat;
+            d.lng = +d.lng;
+            d.population = +d.population;
+            d.id = i;
+            // console.log(i);
+            return d;
+        }).then((cities) => {
+            setCities(cities.filter((d) => d.population > populationThresholdForLabels))
+        });
     }
 
     return <div>

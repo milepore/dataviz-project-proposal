@@ -8,6 +8,7 @@ import { Memoize } from 'd3-rosetta';
 
 const oceanColor = '#EEEEFF';
 const landColor = '#002000';
+const labelColor = '#808000';
 
 const showTooltip = function (tooltipRef, event, html) {
   const tooltipDiv = tooltipRef.current;
@@ -32,6 +33,7 @@ export const map = (
   {
     features,
     reviews,
+    labels = [],
     colorFunction,
     tooltipRef,
     width,
@@ -56,13 +58,18 @@ export const map = (
       .join('g')
       .attr('class','map');
 
+    const mapExtent1 = projection([-180, 90])
+    const mapExtent2 = projection([180, -90])
+
     const ocean = gMap
       .selectAll('rect.ocean')
       .data([null])
       .join('rect')
       .attr('class','ocean')
-      .attr('width', width)
-      .attr('height', height)
+      .attr('width', mapExtent2[0] - mapExtent1[0])
+      .attr('height', mapExtent2[1] - mapExtent1[1])
+      .attr('x', mapExtent1[0])
+      .attr('y', mapExtent1[1])
       .attr('fill', oceanColor)
 
     gMap
@@ -75,23 +82,50 @@ export const map = (
       .attr('stroke', '#BBB')
       .attr('stroke-width', 0.2);
 
-      for (var feature in features) {
-        const featureGroup = gMap
-          .selectAll('g.' + feature)
-          .data([null])
-          .join('g')
-          .attr('class',feature);
+    for (var feature in features) {
+      const featureGroup = gMap
+        .selectAll('g.' + feature)
+        .data([null])
+        .join('g')
+        .attr('class',feature);
 
-        featureGroup
-          .selectAll('path.' + feature)
-          .data(features[feature].features)
-          .join('path')
-          .attr('d', path)
-          .attr('class', feature)
-          .attr('fill',landColor)
-          .attr('stroke','#B0B0B0')
-          .attr('stroke-width','0.2')
-      }
+      featureGroup
+        .selectAll('path.' + feature)
+        .data(features[feature].features)
+        .join('path')
+        .attr('d', path)
+        .attr('class', feature)
+        .attr('fill',landColor)
+        .attr('stroke','#B0B0B0')
+        .attr('stroke-width','0.2')
+    }
+
+    const labelsG = gMap.selectAll('g.labels')
+      .data([null])
+      .join('g')
+      .attr('class', 'labels');
+
+    for (const l of labels) {
+      const [x, y] = projection([l.lng, l.lat]);
+      l.x = x;
+      l.y = y;
+    }
+
+    const labelsText = labelsG
+      .selectAll('text')
+      .data(labels, (d) => d.id)
+      .join('text')
+      .attr('alignment-baseline', 'middle')
+      .attr('x', (d) => d.x)
+      .attr('y', (d) => d.y)
+      .attr('font-size', (d) =>
+        Math.sqrt(d.population / 800000),
+      )
+      .attr('stroke', labelColor)
+      .attr('fill', labelColor)
+      .attr('stroke-width', .02)//(d) => d.population / 30000000)
+      .text((d) => d.city);
+
   
     for (const d of reviews) {
       const [x, y] = projection([d.lng, d.lat]);
