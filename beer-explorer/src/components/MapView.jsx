@@ -32,8 +32,7 @@ const MapView = ({
     height = width / 1.92
 }) => {
 
-    const [ countries, setCountries ] = useState();
-    const [ states, setStates ] = useState();
+    const [ features, setFeatures ] = useState({});
     const [ zoom, setZoom ] = useState();
 
     function resetMap() {
@@ -45,8 +44,8 @@ const MapView = ({
     
     useEffect(() => {
         const svg = d3.select(mapRef.current)
-            .selectAll('svg')
-            .data([null]).join('svg');
+            // .selectAll('svg')
+            // .data([null]).join('svg');
 
         svg.call(d3.zoom().on('zoom', (event) => {
             d3.selectAll('.nvtooltip').style('opacity', '0');
@@ -55,7 +54,7 @@ const MapView = ({
     }, [])
 
     useEffect(() => {
-        if ((data == null)||(countries==null)) {
+        if ((data == null)||(features['Countries']==null)||(features['States']==null)) {
             return 
         }
 
@@ -69,10 +68,10 @@ const MapView = ({
             .data([null]).join('svg');
 
 
-        if (countries && data) {
+        if (features['Countries'] && features['States'] && data) {
             one(svg, 'g', 'zoomable')
                 .attr('transform', zoom)
-                .call(map, { countries, states, reviews : data, tooltipRef, width, height, tooltipHTML, colorFunction });
+                .call(map, { features, reviews : data, tooltipRef, width, height, tooltipHTML, colorFunction });
         }
 
         one(svg, 'g', 'colorscale')
@@ -81,9 +80,9 @@ const MapView = ({
                 x : width-150, y : height-200,
                 colorLegendLabel : column_defs[colorColumn].description });
 
-    }, [countries, states, data, zoom, colorColumn, width, height]);
+    }, [features, data, zoom, colorColumn, width, height]);
 
-    if (countries === undefined) {
+    if (features['Countries'] === undefined) {
         fetch(worldAtlasURL)
             .then((response) => response.json())
             .then((topoJSONData) => {
@@ -91,11 +90,14 @@ const MapView = ({
                 topoJSONData,
                 'countries',
             );
-            setCountries(countries);
-        }, [countries]);
+            setFeatures({
+                'Countries' : countries,
+                ...features
+            });;
+        }, [features]);
     }
 
-    if (states === undefined) {
+    if (features['States'] === undefined) {
         const statesURL = 'https://cdn.jsdelivr.net/npm/us-atlas@3.0.1/states-10m.json';
         fetch(statesURL)
             .then((response) => response.json())
@@ -104,14 +106,17 @@ const MapView = ({
                 topoJSONData,
                 'states',
             );
-            setStates(states);
-        }, [states]);
+            setFeatures({
+                'States' : states,
+                ...features
+            });;
+        }, [features]);
     }
 
     return <div>
         <svg width={width} height={height} id="mapview" ref={mapRef} />
         <div id="tooltip" className="tooltip" ref={tooltipRef}/>
-        <Button className="resetMap" onClick={resetMap}>Reset</Button>
+        <Button className="resetMap" onClick={resetMap}>Reset Zoom</Button>
     </div>
 };
 

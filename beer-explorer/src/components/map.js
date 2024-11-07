@@ -27,8 +27,7 @@ import {
   export const map = (
     selection,
     {
-      countries,
-      states,
+      features,
       reviews,
       colorFunction,
       tooltipRef,
@@ -54,12 +53,6 @@ import {
         .join('g')
         .attr('class','map');
 
-      const gData = selection
-        .selectAll('g.data')
-        .data([null])
-        .join('g')
-        .attr('class','data');
-    
       gMap
         .selectAll('path.graticule')
         .data([null])
@@ -70,25 +63,23 @@ import {
         .attr('stroke', '#BBB')
         .attr('stroke-width', 0.2);
 
-        gMap
-        .selectAll('path.country')
-        .data(countries.features)
-        .join('path')
-        .attr('d', path)
-        .attr('class', 'country')
-        .attr('fill','black')
-        .attr('stroke','#B0B0B0')
-        .attr('stroke-width','0.2')
-    
-        gMap
-        .selectAll('path.state')
-        .data(states.features)
-        .join('path')
-        .attr('d', path)
-        .attr('class', 'state')
-        .attr('fill','black')
-        .attr('stroke','#B0B0B0')
-        .attr('stroke-width','0.2')
+        for (var feature in features) {
+          const featureGroup = gMap
+            .selectAll('g.' + feature)
+            .data([null])
+            .join('g')
+            .attr('class',feature);
+
+          featureGroup
+            .selectAll('path.' + feature)
+            .data(features[feature].features)
+            .join('path')
+            .attr('d', path)
+            .attr('class', feature)
+            .attr('fill','black')
+            .attr('stroke','#B0B0B0')
+            .attr('stroke-width','0.2')
+        }
     
       for (const d of reviews) {
         const [x, y] = projection([d.lng, d.lat]);
@@ -97,6 +88,13 @@ import {
         d.color = colorFunction(d);
       }
     
+      const gData = selection
+        .selectAll('g.data')
+        .data([null])
+        .join('g')
+        .attr('class','data');
+  
+
       var circle = gData
         .selectAll('circle.beer')
         .data(reviews)
@@ -119,6 +117,6 @@ import {
         .attr('fill', 'none')
         .attr('stroke', 'black')
         .attr('stroke-width', 1);
-    }, [countries, reviews, colorFunction]);
+    }, [features, reviews, colorFunction]);
   }
   
