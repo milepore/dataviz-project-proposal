@@ -15,20 +15,19 @@ export const colorLegend = (
       tickSpacing = 10,
       tickPadding = 7,
       scaleBackground = 'white',
-      width = 5,
-      hoveredValue,
-      setHoveredValue
     }
 ) => {
   var colorLegendBG = one(selection, 'rect', 'color-label-background')
-  .attr('transform', `translate(${x-tickSpacing},${y-tickPadding})`);
+    .attr('transform', `translate(${x-tickSpacing},${y-tickPadding-5})`)
+    .attr('rx', '5')
+    .attr('ry', '5')
 
   var colorLegendG = 
     one(selection, 'g', 'color-legend')
     .attr('transform', `translate(${x},${y})`);
 
   one(colorLegendG, 'text', 'color-legend-label')
-    .attr('x', colorLegendLabelX)
+    .attr('x', colorLegendLabelX-tickSpacing/2)
     .attr('y', colorLegendLabelY)
     .attr('class', 'color-legend-label')
     .attr('font-family', 'sans-serif')

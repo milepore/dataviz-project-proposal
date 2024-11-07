@@ -22,54 +22,59 @@ const Barchart = ({ summaryData,
     ) {
         // scales for X and Y axes
         const xScale = d3.scaleBand()
-        .domain(bottomRange)
-        .range([xMargin, width - xMargin]);
+            .domain(bottomRange)
+            .range([xMargin, width - xMargin]);
     
         const yScaleLeft = d3.scaleLinear()
-        .domain(leftRange)
-        .range([height - bottomMargin, topMargin]);
+            .domain(leftRange)
+            .range([height - bottomMargin, topMargin]);
     
         const yScaleRight = d3.scaleLinear()
-        .domain(d3.extent(rightRange))
-        .range([height - bottomMargin, topMargin]);
+            .domain(d3.extent(rightRange))
+            .range([height - bottomMargin, topMargin]);
     
         // BACKGROUND RECT
         svg
-        .selectAll('rect.background')
-        .data([null])
-        .join('rect')
-        .attr('class', 'background')
-        .attr('x', xMargin)
-        .attr('y', topMargin)
-        .attr('width', width - xMargin * 2)
-        .attr('height', height - topMargin - bottomMargin)
-        .attr('fill', '#B5B5B5')
-        .attr('opacity', 0.5); // Adjust opacity as needed
+            .selectAll('rect.background')
+            .data([null])
+            .join('rect')
+            .attr('class', 'background')
+            .attr('x', xMargin)
+            .attr('y', topMargin)
+            .attr('width', width - xMargin * 2)
+            .attr('height', height - topMargin - bottomMargin)
+            .attr('fill', '#B5B5B5')
+            .attr('opacity', 0.5); // Adjust opacity as needed
     
         //CREATE AXIS .. move them to the center of the canvas
         svg
-        .selectAll('g.axisBottom')
-        .data([null])
-        .join('g')
-        .attr('class', 'axisBottom')
-        .attr('transform', `translate(0, ${height - bottomMargin})`) // Left X Axis
-        .call(d3.axisBottom(xScale));
+            .selectAll('g.axisBottom')
+            .data([null])
+            .join('g')
+            .attr('class', 'axisBottom')
+            .attr('transform', `translate(0, ${height - bottomMargin})`) // Left X Axis
+            .call(d3.axisBottom(xScale))
+                .selectAll("text")  
+                .style("text-anchor", "end")
+                .attr("dx", "-.8em")
+                .attr("dy", ".15em")
+                .attr("transform", "rotate(-25)");
     
         svg
-        .selectAll('g.axisLeft')
-        .data([null])
-        .join('g')
-        .attr('class', 'axisLeft')
-        .attr('transform', `translate(${xMargin}, 0)`) // Y axis
-        .call(d3.axisLeft(yScaleLeft));
+            .selectAll('g.axisLeft')
+            .data([null])
+            .join('g')
+            .attr('class', 'axisLeft')
+            .attr('transform', `translate(${xMargin}, 0)`) // Y axis
+            .call(d3.axisLeft(yScaleLeft));
     
         svg
-        .selectAll('g.axisRight')
-        .data([null])
-        .join('g')
-        .attr('class', 'axisRight')
-        .attr('transform', `translate(${width - xMargin}, 0)`) // Y axis
-        .call(d3.axisRight(yScaleRight));
+            .selectAll('g.axisRight')
+            .data([null])
+            .join('g')
+            .attr('class', 'axisRight')
+            .attr('transform', `translate(${width - xMargin}, 0)`) // Y axis
+            .call(d3.axisRight(yScaleRight));
     
         // Add X and Y labels
         svg
@@ -83,6 +88,8 @@ const Barchart = ({ summaryData,
         )
         .style('text-anchor', 'middle')
         .style('font-weight', 'bold')
+        .attr('font-size', 10)
+        .attr('font-family', 'sans-serif')
         .style('fill', 'red')
         .text(leftText);
     
@@ -92,16 +99,21 @@ const Barchart = ({ summaryData,
         .join('text')
         .attr('class', 'bottomText')
         .attr('x', width / 2)
-        .attr('y', height - bottomMargin / 2)
+        .attr('y', height - bottomMargin / 4)
         .style('text-anchor', 'middle')
         .style('font-weight', 'bold')
-        .text(bottomText);
+        .attr('font-size', 10)
+        .attr('font-family', 'sans-serif')
+        .text(bottomText)
+  
     
         svg
         .selectAll('text.rightText')
         .data([null])
         .join('text')
         .attr('class', 'rightText')
+        .attr('font-size', 10)
+        .attr('font-family', 'sans-serif')
         .attr(
             'transform',
             `translate(${width - (xMargin*.25)}, ${height / 2}) rotate(90)`,
@@ -128,7 +140,7 @@ const Barchart = ({ summaryData,
         const spacing = width / (data.length + 1);
         const barCenter = spacing * 0.33;
         const xMargin = 50;
-        const bottomMargin = 75;
+        const bottomMargin = 50;
         const topMargin = 25;
         const barWidth = spacing * .66;
 
@@ -153,8 +165,6 @@ const Barchart = ({ summaryData,
         //     .attr("transform", `translate(${margin.left},${margin.top})`);
 
         const svg = d3.select(ref.current)
-            .selectAll('svg')
-            .data([null]).join('svg')
             .attr('width', width)
             .attr('height', height);
         
