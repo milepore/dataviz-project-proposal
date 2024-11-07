@@ -135,30 +135,33 @@ The downside to this is that the filter doesn't have a ton to do with the actual
 ## Milestones and Live Progress
 
 * Week 9 - Map View of World Reviews
-    * Crated map of world reviews, with pan and zoom [https://vizhub.com/milepore/beer_reviews_on_map]
-    * Updated data to include style families [https://vizhub.com/milepore/beer_ratings_and_locations]
-    * Updated data source to include # reviews
+  * Crated map of world reviews, with pan and zoom [https://vizhub.com/milepore/beer_reviews_on_map]
+  * Updated data to include style families [https://vizhub.com/milepore/beer_ratings_and_locations]
+  * Updated data source to include # reviews
 * Week 10 - Migrated (per professor's suggestion) to react application instead of Vizhub
-    * Got filter view working - for multi-select (state, country, style) fields
-    * Got map ported over to react - that was a bit of a pain
-        * Getting the various pan/zoom to work with react state models was challenging, but works now
-    * Got summarization filter working for non-map views
-    * Got Graph view looking at real data
+  * Got filter view working - for multi-select (state, country, style) fields
+  * Got map ported over to react - that was a bit of a pain
+    * Getting the various pan/zoom to work with react state models was challenging, but works now
+  * Got summarization filter working for non-map views
+  * Got Graph view looking at real data
 * Week 11 - Progress
-    * General Progress
-        * Build another view - Parallel Coordinates
-            * Make it possible to pick which of our dimensions show up in the chart
-       * Added tooltip to map view to allow looking at individual beer ratings
-       * Restructure code to remove the filter and data loading components
-       * Move from create-react-app to VITE for development
-    * Play around with color
-        * Implement color picker and legend with map view
-          * Support 4 different values for color and reasonable color schemes for them
-        * Incorporate color picker and scales to parallel coordinates
+  * General Progress
+  * Build another view - Parallel Coordinates
+    * Make it possible to pick which of our dimensions show up in the chart
+    * Added tooltip to map view to allow looking at individual beer ratings
+    * Restructure code to remove the filter and data loading components
+    * Move from create-react-app to VITE for development
+  * Play around with color
+    * Implement color picker and legend with map view
+      * Support 4 different values for color and reasonable color schemes for them
+    * Incorporate color picker and scales to parallel coordinates
 * Week 12 - Enhance data views
-    * Add axis pickers to graph view
-    * Add data sorting for graph view
-    * Add more filters to the filter view
+  * Added range filteres more filters to the filter views
+  * Updated all the controls to use Material UI (way better L&F)
+  * Got rid of a nested SVG elment (<svg><svg>...</svg></svg>) - that seemed to be causing a bunch of problems with the scrolling, it is much better now
+  * Per suggestions, added state outlines and city names to the map
+  * Minor L&F updates (colors, spacing, legends, fonts)
+  * Added automatic sizing to the pages and SVG elements.  Should support mobile and responsive things now (including auto-resize).
 * Week 13 - Buffer, tuning, look&feel / CSS
 * Week 14 - Buffer / finalize / write paper  
 
