@@ -33,8 +33,14 @@ const MapView = ({
 }) => {
 
     const [ features, setFeatures ] = useState({});
-    const [ zoom, setZoom ] = useState();
+    const [ zoom, setZoom2 ] = useState();
 
+    // limit zooming out to 1.0 zoom, since 1.0 is the whole map
+    function setZoom(z) {
+        if (z!=null && z.k < 1.0)
+            z.k = 1.0
+        return setZoom2(z)
+    }
     function resetMap() {
         setZoom(null);
     }
