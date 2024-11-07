@@ -11,7 +11,8 @@ const Barchart = ({ summaryData,
         width,
         height,
         xMargin,
-        yMargin,
+        topMargin,
+        bottomMargin,
         leftText,
         rightText,
         bottomText,
@@ -26,11 +27,11 @@ const Barchart = ({ summaryData,
     
         const yScaleLeft = d3.scaleLinear()
         .domain(leftRange)
-        .range([height - yMargin, yMargin]);
+        .range([height - bottomMargin, topMargin]);
     
         const yScaleRight = d3.scaleLinear()
         .domain(d3.extent(rightRange))
-        .range([height - yMargin, yMargin]);
+        .range([height - bottomMargin, topMargin]);
     
         // BACKGROUND RECT
         svg
@@ -39,9 +40,9 @@ const Barchart = ({ summaryData,
         .join('rect')
         .attr('class', 'background')
         .attr('x', xMargin)
-        .attr('y', yMargin)
+        .attr('y', topMargin)
         .attr('width', width - xMargin * 2)
-        .attr('height', height - yMargin * 2)
+        .attr('height', height - topMargin - bottomMargin)
         .attr('fill', '#B5B5B5')
         .attr('opacity', 0.5); // Adjust opacity as needed
     
@@ -51,7 +52,7 @@ const Barchart = ({ summaryData,
         .data([null])
         .join('g')
         .attr('class', 'axisBottom')
-        .attr('transform', `translate(0, ${height - yMargin})`) // Left X Axis
+        .attr('transform', `translate(0, ${height - bottomMargin})`) // Left X Axis
         .call(d3.axisBottom(xScale));
     
         svg
@@ -78,7 +79,7 @@ const Barchart = ({ summaryData,
         .attr('class', 'leftText')
         .attr(
             'transform',
-            `translate(${xMargin / 2}, ${height / 2}) rotate(-90)`,
+            `translate(${xMargin*.25}, ${height / 2}) rotate(-90)`,
         )
         .style('text-anchor', 'middle')
         .style('font-weight', 'bold')
@@ -91,7 +92,7 @@ const Barchart = ({ summaryData,
         .join('text')
         .attr('class', 'bottomText')
         .attr('x', width / 2)
-        .attr('y', height - yMargin / 2)
+        .attr('y', height - bottomMargin / 2)
         .style('text-anchor', 'middle')
         .style('font-weight', 'bold')
         .text(bottomText);
@@ -103,7 +104,7 @@ const Barchart = ({ summaryData,
         .attr('class', 'rightText')
         .attr(
             'transform',
-            `translate(${width - xMargin / 2}, ${height / 2}) rotate(90)`,
+            `translate(${width - (xMargin*.25)}, ${height / 2}) rotate(90)`,
         )
         .style('text-anchor', 'middle')
         .style('font-weight', 'bold')
@@ -126,8 +127,9 @@ const Barchart = ({ summaryData,
         // set the dimensions and margins of the graph
         const spacing = width / (data.length + 1);
         const barCenter = spacing * 0.33;
-        const xMargin = 100;
-        const yMargin = 100;
+        const xMargin = 50;
+        const bottomMargin = 75;
+        const topMargin = 25;
         const barWidth = spacing * .66;
 
         const lineGenerator = d3.line(
@@ -161,7 +163,8 @@ const Barchart = ({ summaryData,
             width,
             height,
             xMargin,
-            yMargin,
+            topMargin,
+            bottomMargin,
             'Average Rating',
             'Number Beers',
             summarizedBy.label,

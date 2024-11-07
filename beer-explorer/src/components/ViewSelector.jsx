@@ -38,6 +38,7 @@ const ViewSelector = ({ data, column_defs }) => {
     const [ filteredData, setFilteredData ] = useState()
     const [ colorColumn, setColorColumn ] = useState('family');
     const [ tab, setTab ] = useState('1');
+    const [ filter, setFilter ] = useState({});
 
     const defaultColumns= [ 'review_count', 'review_overall', 'beer_abv', 'family' ]
     const defaultValue = defaultColumns.map((d) => { 
@@ -68,7 +69,7 @@ const ViewSelector = ({ data, column_defs }) => {
             id="filter-header"
         >Data Filter</AccordianSummary>
         <AccordianDetails>
-            <DataFilter data={data} setFilteredData={setFilteredData} column_defs={column_defs}/>
+            <DataFilter data={data} setFilteredData={setFilteredData} column_defs={column_defs} filter={filter} setFilter={setFilter}/>
         </AccordianDetails>
     </Accordian>
     )

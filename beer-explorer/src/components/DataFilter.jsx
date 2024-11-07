@@ -11,9 +11,7 @@ import Slider from '@mui/material/Slider';
 import 'react-range-slider-input/dist/style.css';
 
 
-const DataFilter = ({ data, setFilteredData, column_defs }) => {
-    const [filter, setFilter] = useState({})
-
+const DataFilter = ({ data, setFilteredData, column_defs, filter, setFilter }) => {
     function filterData(data, filter) {
         if (data == null || filter == null)
             return;
