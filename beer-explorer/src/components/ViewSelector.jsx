@@ -40,7 +40,7 @@ const ViewSelector = ({ data, column_defs }) => {
     const [ tab, setTab ] = useState('1');
     const [ filter, setFilter ] = useState({});
 
-    const defaultColumns= [ 'review_count', 'review_overall', 'beer_abv', 'family' ]
+    const defaultColumns= [  'beer_abv', 'review_count', 'review_overall', 'family' ]
     const defaultValue = defaultColumns.map((d) => { 
         return {value:d, label:column_defs[d].description}
     });
@@ -114,14 +114,8 @@ const ViewSelector = ({ data, column_defs }) => {
                 width={width}
                 height={height}
             />
-            <form>
-            <label>Color By:
             <ColorSelector column_defs={column_defs} colorColumn={colorColumn} setColorColumn={(d) => {setColorColumn(d.target.value)}}/>
-            </label>
-            <label>Chart Columns:
-            <ColumnPicker column_defs={column_defs} columns={columns} setColumns={setColumns}/>
-            </label>
-            </form>
+            <ColumnPicker column_defs={column_defs} columns={columns} setColumns={setColumns} label="Chart Columns"/>
             {dataFilter}
         </TabPanel>
     </TabContext>
