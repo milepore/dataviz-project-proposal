@@ -15,6 +15,8 @@ export const colorLegend = (
       tickSpacing = 10,
       tickPadding = 7,
       scaleBackground = 'white',
+      hoveredValue,
+      setHoveredValue
     }
 ) => {
   var colorLegendBG = one(selection, 'rect', 'color-label-background')
@@ -39,13 +41,13 @@ export const colorLegend = (
   // if this is scalar, lets make multiple ticks 
   // and support interactivity
   var buildTickCircle = (s) => {
-    s.append('circle')
+    return s.append('circle')
       .attr('r', 5)
       .attr('fill', colorScale);
   }
 
   var buildTickSquare = (s) => {
-    s.append('rect')
+    return s.append('rect')
       .attr('width', 5)
       .attr('height', tickSpacing)
       .attr('fill', colorScale)
@@ -85,14 +87,22 @@ export const colorLegend = (
       .call((selection) => {
         selection.selectAll('*').remove()
         buildTick(selection)
+      if (setHoveredValue != null ) {
         selection
-          .append('text')
+          .on('mouseover', d => setHoveredValue(d.target.__data__))
+          .on('mouseout', d => setHoveredValue(null))
+          .attr('opacity', d => hoveredValue?d == hoveredValue?1.0:0.1:1.0)
+      }
+
+      selection
+        .append('text')
           .attr('dy', '0.32em')
           .attr('x', tickPadding)
           .attr('visibility', (d) => {hide=!hide; return (!allVis&&hide)?'hidden':'visible'})
           .style('user-select', 'none')
-          .text((d) => d);
+          .text((d) => d)
       })
+      
 
     colorLegendBG.attr('x', 0).attr('y', 0)
     colorLegendBG.attr('height', tickSpacing * (numTicks +1) + tickPadding)

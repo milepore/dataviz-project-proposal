@@ -38,7 +38,7 @@ export const map = (
     tooltipRef,
     width,
     height,
-    tooltipHTML
+    tooltipHTML,
   },
 ) => {
   const memo = Memoize(selection);
@@ -80,7 +80,7 @@ export const map = (
       .attr('d', path(graticule()))
       .attr('fill', 'none')
       .attr('stroke', '#BBB')
-      .attr('stroke-width', 0.2);
+      .attr('stroke-width', 0);
 
     for (var feature in features) {
       const featureGroup = gMap
@@ -145,7 +145,7 @@ export const map = (
       .selectAll('circle.beer')
       .data(reviews)
       .join('circle')
-      .attr('class', 'beer')
+      .attr('class', (d) => ('beer ' + d.family))
       .attr('cx', (d) => d.x)
       .attr('cy', (d) => d.y)
       .attr('r', 0.2)
@@ -163,5 +163,5 @@ export const map = (
       .attr('fill', 'none')
       .attr('stroke', 'black')
       .attr('stroke-width', 1);
-  }, [features, reviews, colorFunction]);
+  }, [features, reviews, colorFunction, width, height]);
 }
