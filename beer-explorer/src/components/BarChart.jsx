@@ -33,6 +33,10 @@ const Barchart = ({ summaryData,
             .domain(d3.extent(rightRange))
             .range([height - bottomMargin, topMargin]);
     
+        const tickSpacing = 50;
+        const innerHeight = height - topMargin - bottomMargin;
+        const ticks = innerHeight / tickSpacing 
+
         // BACKGROUND RECT
         svg
             .selectAll('rect.background')
@@ -42,7 +46,7 @@ const Barchart = ({ summaryData,
             .attr('x', xMargin)
             .attr('y', topMargin)
             .attr('width', width - xMargin * 2)
-            .attr('height', height - topMargin - bottomMargin)
+            .attr('height', innerHeight)
             .attr('fill', '#B5B5B5')
             .attr('opacity', 0.5); // Adjust opacity as needed
     
@@ -66,7 +70,7 @@ const Barchart = ({ summaryData,
             .join('g')
             .attr('class', 'axisLeft')
             .attr('transform', `translate(${xMargin}, 0)`) // Y axis
-            .call(d3.axisLeft(yScaleLeft));
+            .call(d3.axisLeft(yScaleLeft).ticks(ticks));
     
         svg
             .selectAll('g.axisRight')
@@ -74,7 +78,7 @@ const Barchart = ({ summaryData,
             .join('g')
             .attr('class', 'axisRight')
             .attr('transform', `translate(${width - xMargin}, 0)`) // Y axis
-            .call(d3.axisRight(yScaleRight));
+            .call(d3.axisRight(yScaleRight).ticks(ticks));
     
         // Add X and Y labels
         svg
