@@ -166,6 +166,7 @@ The downside to this is that the filter doesn't have a ton to do with the actual
   * Added Sort-By component for bar chart
   * Fixed coloring in the parallel chart view
   * Organized the controls to make it easier to modify the filters and have it apply to multiple views
+  * Multiple bug fixes - mostly around the ordering of events and rendering
 * Week 13 - Buffer, tuning, look&feel / CSS
 * Week 14 - Buffer / finalize / write paper  
 

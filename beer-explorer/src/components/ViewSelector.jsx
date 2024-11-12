@@ -141,8 +141,18 @@ const ViewSelector = ({ data, column_defs }) => {
                 width={width}
                 height={height}
             />
-            <ColorSelector column_defs={column_defs} colorColumn={colorColumn} setColorColumn={setColorColumn}/>
-            <ColumnPicker column_defs={column_defs} columns={columns} setColumns={setColumns} label="Chart Columns"/>
+            <Accordian>
+                <AccordianSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="chart-control"
+                    id="chart-control"
+                    >Chart Settings</AccordianSummary>
+                <AccordianDetails>
+                    <ColorSelector column_defs={column_defs} colorColumn={colorColumn} setColorColumn={setColorColumn}/>
+                    <ColumnPicker column_defs={column_defs} columns={columns} setColumns={setColumns} label="Chart Columns"/>
+                </AccordianDetails>
+            </Accordian>
+
             {dataFilter}
         </TabPanel>
     </TabContext>
