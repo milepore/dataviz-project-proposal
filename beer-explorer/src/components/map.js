@@ -81,8 +81,7 @@ export const map = (
       .attr('fill', 'none')
       .attr('stroke', '#BBB')
       .attr('stroke-width', 0);
-
-    for (var feature in features) {
+    for (var feature of  Object.keys(features).sort()) {
       const featureGroup = gMap
         .selectAll('g.' + feature)
         .data([null])
