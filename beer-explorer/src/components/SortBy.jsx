@@ -31,7 +31,11 @@ const SortBy = ({
             dataSorted[key] = data[key]
         }
 
-        dataSorted.data = data.data.sort((a,b) => a[sortColumn.value] - b[sortColumn.value])
+        if (sortColumn != null)
+            dataSorted.data = data.data.sort((a,b) => a[sortColumn.value] - b[sortColumn.value])
+        else
+            dataSorted.data = data.data;
+    
         return dataSorted;
     }
 
