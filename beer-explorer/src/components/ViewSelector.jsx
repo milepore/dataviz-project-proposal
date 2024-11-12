@@ -17,6 +17,9 @@ import DataFilter from './DataFilter';
 import ColumnPicker from './ColumnPicker';
 import ParallelCoordinates from './ParallelCoordinates';
 import ColorSelector from './ColorSelector';
+import SortBy from './SortBy';
+
+import { sort_column_defs } from '../data-defs';
 
 import { useState } from "react";
 import 'react-tabs/style/react-tabs.css';
@@ -35,6 +38,7 @@ function computeSize() {
 
 const ViewSelector = ({ data, column_defs }) => {
     const [ summaryData, setSummaryData ] = useState()
+    const [ sortedData, setSortedData ] = useState()
     const [ filteredData, setFilteredData ] = useState()
     const [ colorColumn, setColorColumn ] = useState('family');
     const [ tab, setTab ] = useState('1');
@@ -97,24 +101,35 @@ const ViewSelector = ({ data, column_defs }) => {
         </TabPanel>
         <TabPanel value="2">
             <BarChart
-                summaryData={summaryData}
+                summaryData={sortedData}
                 column_defs={column_defs}
                 width={width}
                 height={height}
             />
-            <DataSummary data={filteredData} summaryData={summaryData} setSummaryData={setSummaryData} column_defs={column_defs}/>
+            <Accordian>
+            <AccordianSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="chart-control"
+                id="chart-control"
+                >Chart Settings</AccordianSummary>
+                <AccordianDetails>
+                    <SortBy data={summaryData} sortedData={sortedData} setSortedData={setSortedData} column_defs={sort_column_defs}/>
+                    <DataSummary data={filteredData} summaryData={summaryData} setSummaryData={setSummaryData} column_defs={column_defs}/>
+                </AccordianDetails>
+            </Accordian>
             {dataFilter}
         </TabPanel>
         <TabPanel value="3">
             <ParallelCoordinates
                 data={filteredData}
                 columns={columns.map((d)=>d.value)}
+                colorColumn={colorColumn}
                 columnDefs={column_defs}
                 idValue={(d)=>d.beer_id}
                 width={width}
                 height={height}
             />
-            <ColorSelector column_defs={column_defs} colorColumn={colorColumn} setColorColumn={(d) => {setColorColumn(d.target.value)}}/>
+            <ColorSelector column_defs={column_defs} colorColumn={colorColumn} setColorColumn={setColorColumn}/>
             <ColumnPicker column_defs={column_defs} columns={columns} setColumns={setColumns} label="Chart Columns"/>
             {dataFilter}
         </TabPanel>

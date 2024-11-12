@@ -13,9 +13,14 @@ export const column_defs = {
     family : { type : 'text' , description : 'Style Family', group_by : true, filter_type : 'multi', colorScale : d3.scaleOrdinal(d3.schemePaired) },
     state : { type : 'text', description : 'State',  group_by : true, filter_type : 'multi'},
     country : { type : 'text', description : 'Country',  group_by : true, filter_type : 'multi' },
-    beer_style : { type : 'text', description : 'Style',  group_by : true, filter_type : 'multi' },
+    beer_style : { type : 'text', description : 'Style',  group_by : true, filter_type : 'multi', colorScale : d3.scaleOrdinal(d3.schemePaired) },
     brewery_name : { type : 'text', description : 'Brewery Name' },
     beer_name : { type : 'text', description : 'Beer Name' }
+}
+
+export const sort_column_defs = {
+    ... column_defs,
+    count : { type : 'numeric', description : 'Number Beers' } 
 }
 
 export function selectColumns(s) {

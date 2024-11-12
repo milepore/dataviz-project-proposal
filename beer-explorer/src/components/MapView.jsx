@@ -5,7 +5,6 @@ import * as d3 from "d3";
 import { useEffect, useRef, useState } from "react";
 import { one } from 'd3-rosetta'
 import Button from '@mui/material/Button'
-import ColorSelector from './ColorSelector';
 
 
 function tooltipHTML(d) {
@@ -23,7 +22,7 @@ const worldAtlasURL = 'https://unpkg.com/visionscarto-world-atlas@0.1.0/world/11
 const statesURL = 'https://cdn.jsdelivr.net/npm/us-atlas@3.0.1/states-10m.json';
 const citiesURL =
   'https://gist.githubusercontent.com/curran/a59ef43debb9fcfd38858d0be4f3b087/raw/a56bdbdb758eebf6a387d47e4d428258e5cb2abd/worldcitiesReduced.csv';
-const populationThresholdForLabels = 2500000;
+const populationThresholdForLabels = 2000000;
 
 const styleSheet = new CSSStyleSheet() 
 document.adoptedStyleSheets.push(styleSheet)
@@ -39,7 +38,7 @@ const MapView = ({
     const [ features, setFeatures ] = useState({});
     const [ zoom, setZoom2 ] = useState();
     const [ cities, setCities ] = useState();
-    const [ hoveredValue, setHoveredValue ] = useState()
+    const [ hoveredValue, setHoveredValue ] = useState(null)
 
     function setStyleOverlay(beerStyle) {
         // get our beer style sheet
@@ -135,7 +134,7 @@ circle.beer.${beerStyle} {
                 setHoveredValue : setStyleOverlay
              });
 
-    }, [colorColumn, width, height, hoveredValue]);
+    }, [colorColumn, data, width, height, hoveredValue]);
 
     if (features['Countries'] === undefined) {
         fetch(worldAtlasURL)

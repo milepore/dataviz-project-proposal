@@ -79,6 +79,7 @@ const ParallelCoordinates = (
     
         const colorScale = columnDefs[colorColumn].colorScale;
         const colorValue = (d) => { 
+            console.log(d[colorColumn])
             return d[colorColumn];
         }
     
@@ -101,7 +102,7 @@ const ParallelCoordinates = (
                 }
                 return true;
             });
-        }, [data, columns, brushedIntervals, colorColumn]);
+        }, [data, columns, brushedIntervals]);
 
         // Set up a <g> to contain the marks,
         // so that the layering is consistent
