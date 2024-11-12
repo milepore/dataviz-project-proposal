@@ -19,9 +19,6 @@ export const colorLegend = (
       setHoveredValue
     }
 ) => {
-  console.log(colorScale)
-  console.log(colorScale.domain().length)
-
   var colorLegendBG = one(selection, 'rect', 'color-label-background')
     .attr('transform', `translate(${x-tickSpacing},${y-tickPadding-5})`)
     .attr('rx', '5')

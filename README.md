@@ -155,7 +155,7 @@ The downside to this is that the filter doesn't have a ton to do with the actual
     * Implement color picker and legend with map view
       * Support 4 different values for color and reasonable color schemes for them
     * Incorporate color picker and scales to parallel coordinates
-* Week 12 - Enhance data views
+* Week 12 - Enhance data views with way more interactivity
   * Added range filteres more filters to the filter views
   * Updated all the controls to use Material UI (way better L&F)
   * Got rid of a nested SVG elment (<svg><svg>...</svg></svg>) - that seemed to be causing a bunch of problems with the scrolling, it is much better now

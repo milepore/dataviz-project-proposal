@@ -21,7 +21,7 @@ import SortBy from './SortBy';
 
 import { sort_column_defs } from '../data-defs';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import 'react-tabs/style/react-tabs.css';
 
 function computeSize() {
@@ -55,7 +55,19 @@ const ViewSelector = ({ data, column_defs }) => {
         setTab(newValue);
     };
 
-    window.addEventListener('resize', () => { setSize(computeSize()) })
+    useEffect(() => {
+        function handleResize() {
+            setSize(computeSize())
+        }
+
+        // Attach the event listener to the window object
+        window.addEventListener('resize', handleResize);
+
+        // Remove the event listener when the component unmounts
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
     var columnRanges = null;
     if ((data != null) && (data.columnRanges != null))

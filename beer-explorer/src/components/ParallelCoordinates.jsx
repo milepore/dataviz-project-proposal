@@ -79,7 +79,6 @@ const ParallelCoordinates = (
     
         const colorScale = columnDefs[colorColumn].colorScale;
         const colorValue = (d) => { 
-            console.log(d[colorColumn])
             return d[colorColumn];
         }
     
