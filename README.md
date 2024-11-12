@@ -132,6 +132,10 @@ The biggest uncertianties that I'm worried about is making the interactive filte
 
 The downside to this is that the filter doesn't have a ton to do with the actual visualizations, but everything to do with the tasks the user has to perform.  The visualizations, I'm not worried about too much at this point - although the map seems like it might be a little complicated, but I'm not super-worried yet.
 
+## Attribution
+
+* Icons from Beer by Twitter Emoji on IconScout
+
 ## Milestones and Live Progress
 
 * Week 9 - Map View of World Reviews
