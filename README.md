@@ -163,6 +163,9 @@ The downside to this is that the filter doesn't have a ton to do with the actual
   * Minor L&F updates (colors, spacing, legends, fonts)
   * Added automatic sizing to the pages and SVG elements.  Should support mobile and responsive things now (including auto-resize).
   * Worked through the performance issues with 32k points changing their visibility and got hovering working (though not as smoothly as I'd like) for the color legend by using CSS instead of rerendering.
+  * Added Sort-By component for bar chart
+  * Fixed coloring in the parallel chart view
+  * Organized the controls to make it easier to modify the filters and have it apply to multiple views
 * Week 13 - Buffer, tuning, look&feel / CSS
 * Week 14 - Buffer / finalize / write paper  
 
