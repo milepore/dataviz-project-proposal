@@ -55,6 +55,8 @@ const ParallelCoordinates = (
         if (data == null) {
             return 
         }
+
+        const dataRows = data.csvData;
         const selection = select(ref.current);
         selection
             .attr('width', width)
@@ -70,10 +72,10 @@ const ParallelCoordinates = (
             yScales[column] =
             columnDefs[column].type === 'numeric'
                 ? scaleLinear()
-                    .domain(extent(data, (d) => d[column]))
+                    .domain(extent(dataRows, (d) => d[column]))
                     .range([height - marginBottom, marginTop])
                 : scalePoint()
-                    .domain(data.map((d) => d[column]))
+                    .domain(dataRows.map((d) => d[column]))
                     .range([height - marginBottom, marginTop]);
         }
     
@@ -88,7 +90,7 @@ const ParallelCoordinates = (
         const memoize = Memoize(selection);
         const filteredData = memoize(() => {
             // Uncomment to verify when recomputation happens
-            return data.filter((d) => {
+            return dataRows.filter((d) => {
                 for (const column of columns) {
                     const interval = brushedIntervals[column];
                     if (interval) {

@@ -118,7 +118,7 @@ circle.beer.${beerStyle} {
         if (features['Countries'] && features['States'] && data) {
             one(svg, 'g', 'zoomable')
                 .attr('transform', zoom)
-                .call(map, { features, labels : cities, reviews : data, tooltipRef, width, height, tooltipHTML, colorFunction });
+                .call(map, { features, labels : cities, data : data, tooltipRef, width, height, tooltipHTML, colorFunction });
         }
     }, [features, cities, data, zoom, colorColumn, width, height]);
 

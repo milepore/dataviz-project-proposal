@@ -20,7 +20,21 @@ const DataFilter = ({ data, setFilteredData, column_defs, filter, setFilter }) =
         if (filter == null)
             return data;
 
-        var csvData = data.csvData;
+        const csvData = data.csvData;
+        const range_columns = Object.keys(data.columnRanges)
+        const value_columns = Object.keys(data.columnValues)
+
+        var columnRanges = {}
+        var columnValues = {}
+
+        // Compute ranges and value lists
+        for (c of range_columns) {
+            if (column_defs[c].range != null)
+                columnRanges[c] = [... column_defs[c].range]; // copy it, don't just assign
+            else
+                columnRanges[c] = [0,0];
+        }
+
 
         for (var dataRow of csvData) {
             var includeRow = true;
@@ -44,10 +58,47 @@ const DataFilter = ({ data, setFilteredData, column_defs, filter, setFilter }) =
 
             if (includeRow) {
                 filteredData.push(dataRow)
+                for (var c of value_columns) {
+                    if (!columnValues[c])
+                        columnValues[c] = [];
+                    if (!columnValues[c].includes(dataRow[c])) {
+                        columnValues[c].push(dataRow[c])
+                    }
+                }
+                for (var c of range_columns) {
+                    if (dataRow[c] < columnRanges[c][0]) {
+                        columnRanges[c][0] = dataRow[c];
+                    }
+                    if (dataRow[c] > columnRanges[c][1]) {
+                        columnRanges[c][1] = dataRow[c];
+                    }
+                }
             }
         }
 
-        setFilteredData(filteredData)
+        // now we want to sort all our column values
+        for (c in columnValues) {
+            columnValues[c] = columnValues[c].sort();
+        }
+
+        // Now lets set the ranges for our color scales - but only after we have filtered them
+        for (c in column_defs) {
+            if (column_defs[c].colorScale != null) {
+                if (column_defs[c].type == "numeric")
+                    column_defs[c].colorScale.domain(columnRanges[c]);
+                else
+                    column_defs[c].colorScale.domain(columnValues[c]);
+            }
+        }
+        
+
+        const dataResult = {
+            csvData : filteredData,
+            columnValues : columnValues,
+            columnRanges : columnRanges
+        }
+
+        setFilteredData(dataResult)
     }
 
     function getFieldValues(fieldName) {

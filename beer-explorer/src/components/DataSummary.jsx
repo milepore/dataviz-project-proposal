@@ -30,9 +30,11 @@ const DataSummary = ({
         if (data == null)
             return;
     
+        const dataRows = data.csvData;
+
         var summaryMap = {}
         var summaryKey;
-        for (var dataRow of data) {
+        for (var dataRow of dataRows) {
             var column;
             summaryKey = dataRow[summarizeBy]
             if (summaryMap[summaryKey] == null) {

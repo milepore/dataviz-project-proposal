@@ -32,7 +32,7 @@ export const map = (
   selection,
   {
     features,
-    reviews,
+    data,
     labels = [],
     colorFunction,
     tooltipRef,
@@ -125,7 +125,7 @@ export const map = (
       .attr('stroke-width', .02)//(d) => d.population / 30000000)
       .text((d) => d.city);
 
-  
+    const reviews = data ? data.csvData : [];
     for (const d of reviews) {
       const [x, y] = projection([d.lng, d.lat]);
       d.x = x;
@@ -162,5 +162,5 @@ export const map = (
       .attr('fill', 'none')
       .attr('stroke', 'black')
       .attr('stroke-width', 1);
-  }, [features, reviews, colorFunction, width, height]);
+  }, [features, data, colorFunction, width, height]);
 }
