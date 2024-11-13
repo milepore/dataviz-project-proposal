@@ -19,6 +19,7 @@ function tooltipHTML(d) {
 }
 
 const worldAtlasURL = 'https://unpkg.com/visionscarto-world-atlas@0.1.0/world/110m.json';
+// const worldAtlasURL = 'https://unpkg.com/visionscarto-world-atlas@0.1.0/world/50m.json';
 const statesURL = 'https://cdn.jsdelivr.net/npm/us-atlas@3.0.1/states-10m.json';
 const citiesURL =
   'https://gist.githubusercontent.com/curran/a59ef43debb9fcfd38858d0be4f3b087/raw/a56bdbdb758eebf6a387d47e4d428258e5cb2abd/worldcitiesReduced.csv';
@@ -47,7 +48,7 @@ const MapView = ({
         {
             cssText = `
 circle.beer {
-    opacity: 1;
+    opacity: .25;
     -webkit-transition: none !important;
     -moz-transition: none !important;
     -o-transition: none !important;
@@ -119,6 +120,7 @@ circle.beer.${beerStyle} {
             one(svg, 'g', 'zoomable')
                 .attr('transform', zoom)
                 .call(map, { features, labels : cities, data : data, tooltipRef, width, height, tooltipHTML, colorFunction });
+            setStyleOverlay(null)
         }
     }, [features, cities, data, zoom, colorColumn, width, height]);
 
@@ -133,7 +135,6 @@ circle.beer.${beerStyle} {
                 hoveredValue : hoveredValue,
                 setHoveredValue : setStyleOverlay
              });
-
     }, [colorColumn, data, width, height, hoveredValue]);
 
     if (features['Countries'] === undefined) {

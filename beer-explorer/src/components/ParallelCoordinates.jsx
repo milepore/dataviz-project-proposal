@@ -114,28 +114,13 @@ const ParallelCoordinates = (
         const t = transition().duration(500).ease(easeLinear);
         g.selectAll('path.mark')
             .data(filteredData, idValue)
-            .join(
-            (enter) =>
-                enter
-                .append('path')
+            .join('path')
                 .attr('class', 'mark')
-                .attr('opacity', 0)
-                .call((enter) =>
-                    enter.transition(t).attr('opacity', 1),
-                ),
-            (update) =>
-                update.call((update) =>
-                update.transition(t).attr('opacity', 1),
-                ),
-            (exit) =>
-                exit.call((exit) =>
-                exit.transition(t).attr('opacity', 0).remove(),
-                ),
-            )
-            .attr('fill', 'none')
-            .attr('stroke', (d) => colorScale(colorValue(d)))
-            .attr('stroke-width', 16 / 10)
-            .style('pointer-events', 'none')
+                .attr('opacity', .5)
+                .attr('fill', 'none')
+                .attr('stroke', (d) => colorScale(colorValue(d)))
+                .attr('stroke-width', 16 / 10)
+                .style('pointer-events', 'none')
             //.style('mix-blend-mode', 'color-burn')
             // .style('mix-blend-mode', 'screen')
             // .attr('stroke-linecap', 'round')
