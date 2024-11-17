@@ -172,5 +172,10 @@ The downside to this is that the filter doesn't have a ton to do with the actual
   * Organized the controls to make it easier to modify the filters and have it apply to multiple views
   * Multiple bug fixes - mostly around the ordering of events and rendering
 * Week 13 - Buffer, tuning, look&feel / CSS
+  * Fix bug with color legend when we only have one value
+  * Maybe build a table based view for detail exploration
+  * Auto zoom in map view when picking filters?  (perhaps auto-zoom to extents of lat-lng of data?)
+  * Make state persist between views (just bring setState up to the parent level)
+  * Make it possible to save views - save view state as cookies/local storage?
 * Week 14 - Buffer / finalize / write paper  
 
