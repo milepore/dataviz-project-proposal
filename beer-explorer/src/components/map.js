@@ -43,23 +43,22 @@ export const map = (
 ) => {
   const memo = Memoize(selection);
 
-  memo(() => {
+  const [ projection, path ] = memo(() => {
     const projection = geoEquirectangular()
       .scale(width / 1.75 / Math.PI) 
       .rotate([0, 0]) 
       .center([0, 0]) 
       .translate([width / 2, height / 2])
-    const path = geoPath(projection);
-    const graticule = geoGraticule();
+      const mapExtent1 = projection([-180, 90])
+      const mapExtent2 = projection([180, -90])
 
-    const gMap = selection
-      .selectAll('g.map')
-      .data([null])
-      .join('g')
-      .attr('class','map');
-
-    const mapExtent1 = projection([-180, 90])
-    const mapExtent2 = projection([180, -90])
+      const path = geoPath(projection);
+      const graticule = geoGraticule();
+      const gMap = selection
+        .selectAll('g.map')
+        .data([null])
+        .join('g')
+        .attr('class','map');
 
     const ocean = gMap
       .selectAll('rect.ocean')
@@ -81,49 +80,71 @@ export const map = (
       .attr('fill', 'none')
       .attr('stroke', '#BBB')
       .attr('stroke-width', 0);
-    for (var feature of  Object.keys(features).sort()) {
-      const featureGroup = gMap
-        .selectAll('g.' + feature)
+
+      for (var feature of  Object.keys(features).sort()) {
+        const featureGroup = gMap
+          .selectAll('g.' + feature)
+          .data([null])
+          .join('g')
+          .attr('class',feature);
+  
+        featureGroup
+          .selectAll('path.' + feature)
+          .data(features[feature].features)
+          .join('path')
+          .attr('d', path)
+          .attr('class', feature)
+          .attr('fill',landColor)
+          .attr('stroke','#B0B0B0')
+          .attr('stroke-width','0.2')
+      }
+  
+      const labelsG = gMap.selectAll('g.labels')
         .data([null])
         .join('g')
-        .attr('class',feature);
+        .attr('class', 'labels');
+  
+      for (const l of labels) {
+        const [x, y] = projection([l.lng, l.lat]);
+        l.x = x;
+        l.y = y;
+      }
+  
+      const labelsText = labelsG
+        .selectAll('text')
+        .data(labels, (d) => d.id)
+        .join('text')
+        .attr('alignment-baseline', 'middle')
+        .attr('x', (d) => d.x)
+        .attr('y', (d) => d.y)
+        .attr('font-size', (d) =>
+          Math.sqrt(d.population / 800000),
+        )
+        .attr('stroke', labelColor)
+        .attr('fill', labelColor)
+        .attr('stroke-width', .02)//(d) => d.population / 30000000)
+        .text((d) => d.city);
 
-      featureGroup
-        .selectAll('path.' + feature)
-        .data(features[feature].features)
+      gMap
+        .selectAll('path.outline')
+        .data([null])
         .join('path')
-        .attr('d', path)
-        .attr('class', feature)
-        .attr('fill',landColor)
-        .attr('stroke','#B0B0B0')
-        .attr('stroke-width','0.2')
-    }
+        .attr('class', 'outline')
+        .attr('d', path(graticule.outline()))
+        .attr('fill', 'none')
+        .attr('stroke', 'black')
+        .attr('stroke-width', 1);
+  
+  
+      return [ projection, path ];
+    }, [features, labels, width, height])
 
-    const labelsG = gMap.selectAll('g.labels')
+  memo(() => {
+    const gMap = selection
+      .selectAll('g.map')
       .data([null])
       .join('g')
-      .attr('class', 'labels');
-
-    for (const l of labels) {
-      const [x, y] = projection([l.lng, l.lat]);
-      l.x = x;
-      l.y = y;
-    }
-
-    const labelsText = labelsG
-      .selectAll('text')
-      .data(labels, (d) => d.id)
-      .join('text')
-      .attr('alignment-baseline', 'middle')
-      .attr('x', (d) => d.x)
-      .attr('y', (d) => d.y)
-      .attr('font-size', (d) =>
-        Math.sqrt(d.population / 800000),
-      )
-      .attr('stroke', labelColor)
-      .attr('fill', labelColor)
-      .attr('stroke-width', .02)//(d) => d.population / 30000000)
-      .text((d) => d.city);
+      .attr('class','map');
 
     const reviews = data ? data.csvData : [];
     for (const d of reviews) {
@@ -153,14 +174,5 @@ export const map = (
       .on('mouseover', (event, d) => showTooltip(tooltipRef, event, tooltipHTML(d)))
       .on('mouseout', (event, d) => hideTooltip(tooltipRef))
   
-    gMap
-      .selectAll('path.outline')
-      .data([null])
-      .join('path')
-      .attr('class', 'outline')
-      .attr('d', path(graticule.outline()))
-      .attr('fill', 'none')
-      .attr('stroke', 'black')
-      .attr('stroke-width', 1);
-  }, [features, data, colorFunction, width, height]);
+  }, [data, colorFunction, width, height]);
 }
