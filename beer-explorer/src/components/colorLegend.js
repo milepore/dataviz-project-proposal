@@ -57,7 +57,7 @@ export const colorLegend = (
   var numTicks = 0;
   var ticks = [];
   var allVis = true;
-  if (colorScale.domain().length > 2) {
+  if (colorScale.domain().length != 2) {
     buildTick = buildTickCircle;
     numTicks = colorScale.domain().length;
     ticks = colorScale.domain();
