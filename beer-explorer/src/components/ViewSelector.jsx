@@ -43,6 +43,8 @@ const ViewSelector = ({ data, column_defs }) => {
     const [ colorColumn, setColorColumn ] = useState('family');
     const [ tab, setTab ] = useState('1');
     const [ filter, setFilter ] = useState({});
+    const [ brushedIntervals, setBrushedIntervals ] = useState({});
+
 
     const defaultColumns= [  'beer_abv', 'review_count', 'review_overall', 'family' ]
     const defaultValue = defaultColumns.map((d) => { 
@@ -140,6 +142,8 @@ const ViewSelector = ({ data, column_defs }) => {
                 idValue={(d)=>d.beer_id}
                 width={width}
                 height={height}
+                brushedIntervals={brushedIntervals}
+                setBrushedIntervals={setBrushedIntervals}
             />
             <Accordian>
                 <AccordianSummary

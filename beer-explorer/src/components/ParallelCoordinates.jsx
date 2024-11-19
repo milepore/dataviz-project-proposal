@@ -42,9 +42,12 @@ const ParallelCoordinates = (
       marginRight = 94,
       marginBottom = 50,
       marginLeft = 63,
+      brushedIntervals,
+      setBrushedIntervals
     }) => {
     
-    const [ brushedIntervals, setBrushedIntervals ] = useState({});
+    if (brushedIntervals == null && setBrushedIntervals == null)
+        [ brushedIntervals, setBrushedIntervals ] = useState({});
 
     const updateBrushedInterval = ({column, interval}) => {
         setBrushedIntervals( { ... brushedIntervals, [column] : interval, })
