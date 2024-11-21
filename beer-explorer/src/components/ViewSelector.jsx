@@ -17,6 +17,7 @@ import DataFilter from './DataFilter';
 import ColumnPicker from './ColumnPicker';
 import ParallelCoordinates from './ParallelCoordinates';
 import ColorSelector from './ColorSelector';
+import GroupedHistogram from './GroupedHistogram';
 import SortBy from './SortBy';
 
 import { sort_column_defs } from '../data-defs';
@@ -41,6 +42,7 @@ const ViewSelector = ({ data, column_defs }) => {
     const [ sortedData, setSortedData ] = useState()
     const [ filteredData, setFilteredData ] = useState()
     const [ colorColumn, setColorColumn ] = useState('family');
+    const [ groupBy, setGroupBy ] = useState('family')
     const [ tab, setTab ] = useState('1');
     const [ filter, setFilter ] = useState({});
     const [ brushedIntervals, setBrushedIntervals ] = useState({});
@@ -100,6 +102,7 @@ const ViewSelector = ({ data, column_defs }) => {
         <Tab label="Map View" value="1"/>
         <Tab label="Bar Chart" value="2"/>
         <Tab label="Parallel Lines" value="3"/>
+        <Tab label="Grouped Histogram" value="4"/>
         </TabList>
 
         <TabPanel value="1">
@@ -159,6 +162,32 @@ const ViewSelector = ({ data, column_defs }) => {
 
             {dataFilter}
         </TabPanel>
+
+        <TabPanel value="4">
+            <GroupedHistogram
+                data={filteredData}
+                column_defs={column_defs}
+                width={width}
+                height={height}
+                bucketColumn={'review_overall'}
+                divideColumn={colorColumn}
+                ticks={11}
+            />
+            <Accordian>
+                <AccordianSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="chart-control"
+                    id="chart-control"
+                    >Chart Settings</AccordianSummary>
+                <AccordianDetails>
+                    <ColorSelector column_defs={column_defs} colorColumn={colorColumn} setColorColumn={setColorColumn} filter={(d) => (column_defs[d].type == 'text')}/>
+                </AccordianDetails>
+            </Accordian>
+
+            {dataFilter}
+        </TabPanel>
+
+
     </TabContext>
     )
 }

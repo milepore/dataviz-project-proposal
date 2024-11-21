@@ -110,4 +110,6 @@ const DataSummary = ({
     />
 
 }
+
+export { buildSelectBox };
 export default DataSummary;

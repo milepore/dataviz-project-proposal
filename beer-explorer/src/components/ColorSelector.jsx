@@ -7,12 +7,13 @@ const ColorSelector = ({
     colorColumn,
     setColorColumn,
     column_defs,
+    filter = (d) => 1,
     label = "Color By:"
 }) => {
     var options = []
     if (column_defs !== null) {
         for (var column in column_defs) {
-            if (column_defs[column].colorScale != null) {
+            if (filter(column) && (column_defs[column].colorScale != null)) {
                 options.push( <MenuItem key={column} value={column}>{column_defs[column].description}</MenuItem>)
             }
         }

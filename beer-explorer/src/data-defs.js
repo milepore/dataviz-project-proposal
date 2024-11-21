@@ -11,8 +11,8 @@ export const column_defs = {
     beer_style_id: { type : 'numeric', hidden : true },
     review_count : { type : 'numeric', hidden : false, filter_type : 'range', range_step : 1, description : 'Number of Reviews', summary : true, colorScale : d3.scaleSequentialPow(d3.interpolatePurples).exponent(.1) },
     family : { type : 'text' , description : 'Style Family', group_by : true, filter_type : 'multi', colorScale : d3.scaleOrdinal(d3.schemePaired) },
-    state : { type : 'text', description : 'State',  group_by : true, filter_type : 'multi'},
-    country : { type : 'text', description : 'Country',  group_by : true, filter_type : 'multi' },
+    state : { type : 'text', description : 'State',  group_by : true, filter_type : 'multi', colorScale : d3.scaleOrdinal(d3.schemePaired)},
+    country : { type : 'text', description : 'Country',  group_by : true, filter_type : 'multi', colorScale : d3.scaleOrdinal(d3.schemePaired) },
     beer_style : { type : 'text', description : 'Style',  group_by : true, filter_type : 'multi', colorScale : d3.scaleOrdinal(d3.schemePaired) },
     brewery_name : { type : 'text', description : 'Brewery Name' },
     beer_name : { type : 'text', description : 'Beer Name' }
