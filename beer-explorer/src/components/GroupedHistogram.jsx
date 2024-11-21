@@ -109,11 +109,13 @@ function createAxes(
  * @param {*} ticks the number of buckets that we will create
  * @param {*} valueRange the range of the values (should be able to get this from
  * data.valueRanges[bucketColumn]??)
+ * @param {*} percentages should the values we return be percentages of the total
+ * for that category to more easily compare values 
  * @return an array, containing 'ticks' values where each value is an object
  * where the key represents all possible values of divideColumn and the value
  * is an integer with the count of those values in fitleredData
  */
-function computeData(data, bucketColumn, divideColumn, ticks, valueRange) {
+function computeData(data, bucketColumn, divideColumn, ticks, valueRange, percentages=true) {
     var filteredData = data.csvData;
     // I'm counting - so I want a data structure like this:
     // [ // array - index is the group
@@ -127,6 +129,11 @@ function computeData(data, bucketColumn, divideColumn, ticks, valueRange) {
         var valueBottom = valueRange[0] + ( valueRange[1] / (ticks-1) ) * i;
         var valueTop = valueRange[0] + ( valueRange[1] / (ticks-1) ) * (i + 1);
         valueRanges.push([ valueBottom, valueTop ]);
+    }
+
+    var totals = {}
+    for (var group of data.columnValues[divideColumn]) {
+        totals[group] = 0;
     }
 
     // now lets initialize our values
@@ -145,8 +152,15 @@ function computeData(data, bucketColumn, divideColumn, ticks, valueRange) {
         for (var i = 0 ; i < ticks ; i++) {
             if ((row[bucketColumn] >= valueRanges[i][0])&&(row[bucketColumn] <= valueRanges[i][1])){
                 stackedGraphValues[i][row[divideColumn]]++;
+                totals[row[divideColumn]]++;
             }
         }
+    }
+
+    if (percentages) {
+        for (var tick in stackedGraphValues)
+            for (var group in stackedGraphValues[tick])
+                stackedGraphValues[tick][group] = stackedGraphValues[tick][group] / totals[group]
     }
 
     return stackedGraphValues;
@@ -159,6 +173,7 @@ const GroupedHistogram = ({ data,
     bucketColumn,
     divideColumn,
     ticks,
+    percentages = true
  }) => {
 
     const ref = useRef();
@@ -169,7 +184,7 @@ const GroupedHistogram = ({ data,
         }
 
         const valueRange = column_defs[bucketColumn].range;
-        var stackedGraphValues = computeData(data, bucketColumn, divideColumn, ticks, valueRange)
+        var stackedGraphValues = computeData(data, bucketColumn, divideColumn, ticks, valueRange, percentages)
 
         var maxValue = 0;
         for (var values of stackedGraphValues) {
@@ -183,8 +198,6 @@ const GroupedHistogram = ({ data,
         const topMargin = 25;
         const marginLeft = 50;
         const marginRight = 120;
-        const barSpacing = 0;
-        const barGroupSpacing = 0;
 
         const svg = d3.select(ref.current)
             .attr('width', width)
@@ -198,7 +211,7 @@ const GroupedHistogram = ({ data,
             marginRight,
             topMargin,
             bottomMargin,
-            'Number Beers',
+            percentages ? 'Percentage of Beers' : 'Number of Beers',
             'Rating',
             [ 0, maxValue],
             valueRange,
@@ -208,9 +221,9 @@ const GroupedHistogram = ({ data,
         var colorScale = column_defs[divideColumn].colorScale;
 
         const innerWidth = width - marginLeft - marginRight;
-        const categoryWidth = ( innerWidth / ticks ) - barSpacing;
+        const categoryWidth = ( innerWidth / ticks );
         const numberGroups = data.columnValues[divideColumn].length;
-        const barWidth = categoryWidth / numberGroups;
+        const barWidth = categoryWidth / (numberGroups + 2); // so we have space
         // make a bunch of groups called 'datagroup', then make bars in each
         svg.selectAll('g.datagroup').data(stackedGraphValues).join('g').attr('class', 'datagroup')
             // by doing a transform, we don't need to worry about 

@@ -104,7 +104,7 @@ const DataFilter = ({ data, setFilteredData, column_defs, filter, setFilter }) =
     function getFieldValues(fieldName) {
         if (data == null)
             return [];
-        var options = data.columnValues[fieldName]
+        var options = data.columnValues[fieldName].filter((d) => (d!=""))
         if (options == null)
             options = []
         return options;
@@ -135,9 +135,11 @@ const DataFilter = ({ data, setFilteredData, column_defs, filter, setFilter }) =
         if (fieldDef.filter_type === 'multi') {
             var options=getFieldValues(fieldName)
             return <Autocomplete
+                key={fieldName}
                 multiple
                 id={"filter-" + fieldName}
                 options={options}
+                // getOptionKey={(d) => (d==""?"blank":d)}
                 getOptionLabel={(option) => option}
                 value={getFilterValue(fieldName, [])}
                 onChange={(e,v) => updateMultiFilter(fieldName, v)}
@@ -162,7 +164,7 @@ const DataFilter = ({ data, setFilteredData, column_defs, filter, setFilter }) =
             //         step={column_defs[fieldName].range_step}
             //         onInput={(e) => updateRangeFilter(fieldName, e)}/>
             //     </label>
-            return <FormLabel>{column_defs[fieldName].description}
+            return <FormLabel key={fieldName}>{column_defs[fieldName].description}
                     <Slider
                         getAriaLabel={() => column_defs[fieldName].description}
                         value={value}
@@ -183,6 +185,6 @@ const DataFilter = ({ data, setFilteredData, column_defs, filter, setFilter }) =
 
     useEffect(() => { filterData(data, filter) }, [data, filter]);
 
-    return (Object.entries(column_defs).map((item) => makeFilterElement(item))    )
+    return (Object.entries(column_defs).map((item) => makeFilterElement(item)))
 }
 export default DataFilter;

@@ -8,6 +8,8 @@ import Accordian from '@mui/material/Accordion'
 import AccordianSummary from '@mui/material/AccordionSummary'
 import AccordianDetails from '@mui/material/AccordionDetails'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Checkbox from '@mui/material/Checkbox'
 
 
 import BarChart from './BarChart';
@@ -42,7 +44,7 @@ const ViewSelector = ({ data, column_defs }) => {
     const [ sortedData, setSortedData ] = useState()
     const [ filteredData, setFilteredData ] = useState()
     const [ colorColumn, setColorColumn ] = useState('family');
-    const [ groupBy, setGroupBy ] = useState('family')
+    const [ percentages, setPercentages ] = useState(true)
     const [ tab, setTab ] = useState('1');
     const [ filter, setFilter ] = useState({});
     const [ brushedIntervals, setBrushedIntervals ] = useState({});
@@ -172,6 +174,7 @@ const ViewSelector = ({ data, column_defs }) => {
                 bucketColumn={'review_overall'}
                 divideColumn={colorColumn}
                 ticks={11}
+                percentages={percentages}
             />
             <Accordian>
                 <AccordianSummary
@@ -180,6 +183,10 @@ const ViewSelector = ({ data, column_defs }) => {
                     id="chart-control"
                     >Chart Settings</AccordianSummary>
                 <AccordianDetails>
+                    <FormControlLabel control={<Checkbox 
+                        checked={percentages}
+                        onChange={(e) => setPercentages(e.target.checked)}
+                    />} label="Compute Percentages" />
                     <ColorSelector column_defs={column_defs} colorColumn={colorColumn} setColorColumn={setColorColumn} filter={(d) => (column_defs[d].type == 'text')}/>
                 </AccordianDetails>
             </Accordian>
