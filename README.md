@@ -175,5 +175,8 @@ The downside to this is that the filter doesn't have a ton to do with the actual
   * Fix bug with color legend when we only have one value
   * Make state persist between views (just bring setState up to the parent level)
   * Updated memoization to not redraw map and cities each time we change data
-* Week 14 - Buffer / finalize / write paper  
-
+* Week 14 - Buffer / finalize / write paper
+  * Last week's exploration made me think that I'd like to really be able to see the distribution of various categories on ratings.  So I created a new view - a multiple histogram view.  This view either allows stacked or unstacked histograms showing the ratings distribution for a given category of beers.  It is really helpful because I can take the same thing I did before and show how ratings are mostly equally distributed no matter what style, country, etc.
+    * This required bucketing the histogram while splitting the data, pretty straight forward
+    * To compare though, I wanted to use percentage of beers in each one - not absolugte numbers (since that seemed to be more about how many beers, not the distribution)
+  * Both of these settings are configurable (stacked/not stacked as well as absolute/percentae)
