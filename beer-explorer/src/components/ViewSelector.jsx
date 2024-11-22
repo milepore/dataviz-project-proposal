@@ -48,6 +48,7 @@ const ViewSelector = ({ data, column_defs }) => {
     const [ tab, setTab ] = useState('1');
     const [ filter, setFilter ] = useState({});
     const [ brushedIntervals, setBrushedIntervals ] = useState({});
+    const [ stacked, setStacked ] = useState(true)
 
 
     const defaultColumns= [  'beer_abv', 'review_count', 'review_overall', 'family' ]
@@ -175,6 +176,7 @@ const ViewSelector = ({ data, column_defs }) => {
                 divideColumn={colorColumn}
                 ticks={11}
                 percentages={percentages}
+                stacked={stacked}
             />
             <Accordian>
                 <AccordianSummary
@@ -183,6 +185,10 @@ const ViewSelector = ({ data, column_defs }) => {
                     id="chart-control"
                     >Chart Settings</AccordianSummary>
                 <AccordianDetails>
+                    <FormControlLabel control={<Checkbox 
+                        checked={stacked}
+                        onChange={(e) => setStacked(e.target.checked)}
+                    />} label="Stacked" />
                     <FormControlLabel control={<Checkbox 
                         checked={percentages}
                         onChange={(e) => setPercentages(e.target.checked)}
