@@ -180,3 +180,6 @@ The downside to this is that the filter doesn't have a ton to do with the actual
     * This required bucketing the histogram while splitting the data, pretty straight forward
     * To compare though, I wanted to use percentage of beers in each one - not absolugte numbers (since that seemed to be more about how many beers, not the distribution)
   * Both of these settings are configurable (stacked/not stacked as well as absolute/percentae)
+  * Based on this week's lecture, I thought it would be really cool to add the ability to brush to the map.  Basically select a region and filter by longitude and latitude.  The challenge there is that we already have pan/zoom going on.
+    * To handle this, I created an "mode" icon in the lower right of the map that you can toggle to turn on brushing or zooming.
+  * I also turned off the hover behavior on the color legend on the map.  It was just too slow.  I think rendering the opacity just made it terrible.  In the future I'd love to see if we could make that better, but for now - in the interest of usability, I've turned it off.

@@ -35,6 +35,7 @@ export const colorLegend = (
     .attr('font-family', 'sans-serif')
     .style('user-select', 'none')
     .attr('font-size', 10)
+    .attr('color', 'black')
     .text(colorLegendLabel);
     
   // we can have 2 types here - scalar and range
@@ -98,6 +99,7 @@ export const colorLegend = (
         .append('text')
           .attr('dy', '0.32em')
           .attr('x', tickPadding)
+          .attr('color', 'black')
           .attr('visibility', (d) => {hide=!hide; return (!allVis&&hide)?'hidden':'visible'})
           .style('user-select', 'none')
           .text((d) => d)

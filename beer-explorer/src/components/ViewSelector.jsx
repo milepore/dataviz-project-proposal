@@ -115,6 +115,8 @@ const ViewSelector = ({ data, column_defs }) => {
                 colorColumn={colorColumn}
                 width={width}
                 height={height}
+                setFilter={setFilter}
+                filter={filter}
             />
             <ColorSelector column_defs={column_defs} colorColumn={colorColumn} setColorColumn={setColorColumn}/>
             {dataFilter}

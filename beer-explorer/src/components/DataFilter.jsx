@@ -87,7 +87,7 @@ const DataFilter = ({ data, setFilteredData, column_defs, filter, setFilter }) =
                 if (column_defs[c].type == "numeric")
                     column_defs[c].colorScale.domain(columnRanges[c]);
                 else
-                    column_defs[c].colorScale.domain(columnValues[c]);
+                    column_defs[c].colorScale.domain(columnValues[c]?columnValues[c]:[]);
             }
         }
         

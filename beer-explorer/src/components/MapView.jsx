@@ -25,6 +25,9 @@ const citiesURL =
   'https://gist.githubusercontent.com/curran/a59ef43debb9fcfd38858d0be4f3b087/raw/a56bdbdb758eebf6a387d47e4d428258e5cb2abd/worldcitiesReduced.csv';
 const populationThresholdForLabels = 2000000;
 
+const brushIcon = 'select-area-icon.svg'
+const zoomIcon = 'zoom-pan.svg'
+
 const styleSheet = new CSSStyleSheet() 
 document.adoptedStyleSheets.push(styleSheet)
 
@@ -33,13 +36,17 @@ const MapView = ({
     column_defs,
     colorColumn = 'family',
     width = window.innerWidth,
-    height = width / 1.92
+    height = width / 1.92,
+    setFilter,
+    filter
 }) => {
 
     const [ features, setFeatures ] = useState({});
     const [ zoom, setZoom2 ] = useState();
     const [ cities, setCities ] = useState();
     const [ hoveredValue, setHoveredValue ] = useState(null)
+    const [ mode, setMode ] = useState('zoom');
+    const [ projection, setProjection ] = useState(null);
 
     function setStyleOverlay(beerStyle) {
         // get our beer style sheet
@@ -94,16 +101,64 @@ circle.beer.${beerStyle} {
         const svg = d3.select(mapRef.current)
         one(svg, 'g', 'zoomable')
         one(svg, 'g', 'colorscale')
+        one(svg, 'g', 'modeIcon')
     }, [])
 
 
     useEffect(() => {
         const svg = d3.select(mapRef.current)
-        svg.call(d3.zoom().on('zoom', (event) => {
-            d3.selectAll('.nvtooltip').style('opacity', '0');
-            setZoom(event.transform)
-        }));
-    }, [])
+        const zoomable = svg.select('g.zoomable');
+
+        const iconG = svg.select('g.modeIcon')
+        const mapBrush = d3.brush()
+
+        iconG.on('click', () => mode == 'zoom' ? setMode('brush'):setMode('zoom'));
+        one(iconG, 'rect', 'iconBG')
+            .attr("width", 25)
+            .attr("height", 25)
+            .attr("x", width - 50)
+            .attr("y", height - 50)
+            .attr("fill", "white")
+
+        var iconFile
+        if (mode == 'zoom') {
+            // turn off brushing
+            zoomable.on(".brush", null);
+            svg.call(d3.zoom().on('zoom', (event) => {
+                d3.selectAll('.nvtooltip').style('opacity', '0');
+                setZoom(event.transform)
+            }));
+            iconFile = zoomIcon
+        } else {
+            // turn off zooming
+            svg.on(".zoom", null);
+            // do brushing
+            const mapBrush = d3.brush().on("end", (e) => { 
+                if (projection) {
+                    var newFilter = { ...filter};
+                    if (e.selection == null) {
+                        newFilter.lat = undefined;
+                        newFilter.lng = undefined;                        
+                    } else {
+                        var l1 = projection.projection.invert(e.selection[0])
+                        var l2 = projection.projection.invert(e.selection[1])
+                        newFilter.lat = [ l1[1], l2[1]].sort();
+                        newFilter.lng = [ l1[0], l2[0]].sort();
+                    }
+
+                    setFilter(newFilter)
+                }
+            });
+            zoomable.call(mapBrush)
+            iconFile = brushIcon
+        }
+        one(iconG, 'image', 'icon')
+            .attr("xlink:href",iconFile)
+            .attr("width", 25)
+            .attr("height", 25)
+            .attr("x", width - 50)
+            .attr("y", height - 50)
+    }, [mode, projection])
 
     useEffect(() => {
         if ((data == null)||(features['Countries']==null)||(features['States']==null)) {
@@ -119,8 +174,7 @@ circle.beer.${beerStyle} {
         if (features['Countries'] && features['States'] && data) {
             one(svg, 'g', 'zoomable')
                 .attr('transform', zoom)
-                .call(map, { features, labels : cities, data : data, tooltipRef, width, height, tooltipHTML, colorFunction });
-            setStyleOverlay(null)
+                .call(map, { features, labels : cities, data : data, tooltipRef, width, height, tooltipHTML, colorFunction, setProjection: setProjection });
         }
     }, [features, cities, data, zoom, colorColumn, width, height]);
 
@@ -132,8 +186,8 @@ circle.beer.${beerStyle} {
                 colorScale : column_defs[colorColumn].colorScale,
                 x : width-150, y : height-200,
                 colorLegendLabel : column_defs[colorColumn].description,
-                hoveredValue : hoveredValue,
-                setHoveredValue : setStyleOverlay
+                // hoveredValue : hoveredValue,
+                // setHoveredValue : setStyleOverlay
              });
     }, [colorColumn, data, width, height, hoveredValue]);
 
@@ -173,7 +227,6 @@ circle.beer.${beerStyle} {
             d.lng = +d.lng;
             d.population = +d.population;
             d.id = i;
-            // console.log(i);
             return d;
         }).then((cities) => {
             setCities(cities.filter((d) => d.population > populationThresholdForLabels))

@@ -2,7 +2,7 @@ import {
     geoEquirectangular,
     geoPath,
     geoGraticule,
-    select
+    select,
   } from 'd3';
 import { Memoize } from 'd3-rosetta';
 
@@ -39,6 +39,7 @@ export const map = (
     width,
     height,
     tooltipHTML,
+    setProjection
   },
 ) => {
   const memo = Memoize(selection);
@@ -135,6 +136,8 @@ export const map = (
         .attr('stroke', 'black')
         .attr('stroke-width', 1);
   
+      if (setProjection)
+        setProjection({ projection : projection })
   
       return [ projection, path ];
     }, [features, labels, width, height])
@@ -153,7 +156,7 @@ export const map = (
       d.y = y;
       d.color = colorFunction(d);
     }
-  
+
     const gData = selection
       .selectAll('g.data')
       .data([null])
@@ -175,4 +178,6 @@ export const map = (
       .on('mouseout', (event, d) => hideTooltip(tooltipRef))
   
   }, [data, colorFunction, width, height]);
+
+  return projection;
 }
