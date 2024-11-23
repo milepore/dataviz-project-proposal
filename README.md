@@ -59,7 +59,7 @@ These screens are described in more detail and sketch form below:
 
 ### Beer Style Explorer - Map View
 
-![Map View](https://raw.githubusercontent.com/milepore/dataviz-project-proposal/refs/heads/master/images/sketch/map.png)]
+![Map View](https://raw.githubusercontent.com/milepore/dataviz-project-proposal/refs/heads/master/images/sketch/map.png)
 
 This screen will Let the user explore the relationship between beer and geography.
 
@@ -73,7 +73,7 @@ The user can change views with the tabs (map/graph/radar or parallel coordinates
 
 ### Graph View
 
-![Graph View](https://raw.githubusercontent.com/milepore/dataviz-project-proposal/refs/heads/master/images/sketch/line-and-bar.png?raw=true)]
+![Graph View](https://raw.githubusercontent.com/milepore/dataviz-project-proposal/refs/heads/master/images/sketch/line-and-bar.png?raw=true)
 
 This shows the relationship between two different variables using bar marks and line marks
 
@@ -93,7 +93,7 @@ Grouping can be set to:
 * State (maybe)
 
 ### Radar View
-![Radar View](https://raw.githubusercontent.com/milepore/dataviz-project-proposal/refs/heads/master/images/sketch/radar.png?raw=true)]
+![Radar View](https://raw.githubusercontent.com/milepore/dataviz-project-proposal/refs/heads/master/images/sketch/radar.png?raw=true)
 
 
 I am undecided if I will implment this one.  I really like the way that these show changes as you go from one set of selected data to another -
@@ -117,7 +117,7 @@ Grouping can be set to:
 
 ### Parallel Coordinates View
 
-![Parallel Coordinates View](https://raw.githubusercontent.com/milepore/dataviz-project-proposal/refs/heads/master/images/sketch/parallel-coordinates.png?raw=true)]
+![Parallel Coordinates View](https://raw.githubusercontent.com/milepore/dataviz-project-proposal/refs/heads/master/images/sketch/parallel-coordinates.png?raw=true)
 
 Allows exploring how beers with similar attributes are related.
 
@@ -131,7 +131,7 @@ Uses same filter to break things down
 
 When the Beer Explorer first comes up, the user encounters the entire dataset, plotted on a map, colored by Style Family:
 
-![Default Map View](https://raw.githubusercontent.com/milepore/dataviz-project-proposal/refs/heads/master/images/screens/start-map.png)]
+![Default Map View](https://raw.githubusercontent.com/milepore/dataviz-project-proposal/refs/heads/master/images/screens/start-map.png)
 
 From here, the user can:
 
@@ -145,7 +145,7 @@ From here, the user can:
 
 One of the major features of the Beer Explorer is the ability to filter the data in various forms.  There is so much data, that selecting a subset of it really helps discover new things.
 
-![Data Filter](https://raw.githubusercontent.com/milepore/dataviz-project-proposal/refs/heads/master/images/screens/data-filter.png)]
+![Data Filter](https://raw.githubusercontent.com/milepore/dataviz-project-proposal/refs/heads/master/images/screens/data-filter.png)
 
 The data filter is available on all of the various screen.  The filter state persists from screen to screen.  The user can filter on a variety of fields:
 
@@ -165,7 +165,7 @@ The data filter is available on all of the various screen.  The filter state per
 
 Our combination bar chart and line graph looks like our original sketch.
 
-![Bar Chart](https://raw.githubusercontent.com/milepore/dataviz-project-proposal/refs/heads/master/images/screens/bar-chart.png)]
+![Bar Chart](https://raw.githubusercontent.com/milepore/dataviz-project-proposal/refs/heads/master/images/screens/bar-chart.png)
 
 In addition to filtering, the user can also determine how the bars should be sorted, and how to summarize the data - grouping by various categorical fields, and sorting by numeric fields.
 
@@ -173,17 +173,17 @@ In addition to filtering, the user can also determine how the bars should be sor
 
 We have a parallel lines view.  In this view, I implmeented the ability for the user to pick which axes to show (in the "Chart Columns", along with selecting how to color the graph.  This really lets the user see a bunch of different things through the view.  Additionally, this view supports brushing of values across all the axes.
 
-![Parallel Lines](https://raw.githubusercontent.com/milepore/dataviz-project-proposal/refs/heads/master/images/screens/parallel-lines.png)]
+![Parallel Lines](https://raw.githubusercontent.com/milepore/dataviz-project-proposal/refs/heads/master/images/screens/parallel-lines.png)
 
 ### Grouped Histogram
 
 While exploring some of the data, I realized that I was pretty interested in seeing the pattern of ratings across a few different categories.  I was thinking "I'd like to see the distribution of ratings across geographies, or maybe across style categories".
 
-![Interwoven Histogram](https://raw.githubusercontent.com/milepore/dataviz-project-proposal/refs/heads/master/images/screens/interwoven-histogram.png)]
+![Interwoven Histogram](https://raw.githubusercontent.com/milepore/dataviz-project-proposal/refs/heads/master/images/screens/interwoven-histogram.png)
 
 In order to do that, I created the Gruoped Histogram view.  This view supports both a stacked histogram as well as multiple histograms.  It also can compute the percentages of beers that are in each of the categories, or the absolute number - with percentages making it easy to compare multiple histograms.
 
-![Separate Histograms](https://raw.githubusercontent.com/milepore/dataviz-project-proposal/refs/heads/master/images/screens/separate-histogram.png)]
+![Separate Histograms](https://raw.githubusercontent.com/milepore/dataviz-project-proposal/refs/heads/master/images/screens/separate-histogram.png)
 
 This let me answer the question "was there any major difference in distribution of ratings across various factors".  For most of the factors that I've looked at - as long as there are sufficient ratings in a given category - it seems like the answer is "no".  Ratings are pretty much bell-curve distributed across all the categories.
 
@@ -240,8 +240,19 @@ This project was developed over a series of weeks.  As I got feedback, I would u
   * Based on this week's lecture, I thought it would be really cool to add the ability to brush to the map.  Basically select a region and filter by longitude and latitude.  The challenge there is that we already have pan/zoom going on.
     * To handle this, I created an "mode" icon in the lower right of the map that you can toggle to turn on brushing or zooming.
   * I also turned off the hover behavior on the color legend on the map.  It was just too slow.  I think rendering the opacity just made it terrible.  In the future I'd love to see if we could make that better, but for now - in the interest of usability, I've turned it off.
+  * Create a video and start our presentation:
+    * Video: [https://youtu.be/FIpxhCtVROQ]
+    * Presentation: [https://docs.google.com/presentation/d/1Qh-B5uPyp1aup3yByIsakFA6nPLSW5Ntlc9SiGm1_6Q/edit?usp=sharing]
 
 ## Attribution
 
 * Icons from Beer by Twitter Emoji on IconScout
 
+## Things for the future
+
+There are a few things I'd love to try and figure out in the future:
+
+* The performance isn't great when we have everything showing on the map or parallel coordinates view.  I'd like to understand what is driving that poor performace and try and make it better.  It is a lot of data.
+* The filter component has a bunch of range selectors.  It might be pretty cool to show histograms above those as part of the visualization - so the user knows where the bulk of the data is.
+* I could go back and add a radar chart.  Not sure how useful, but it might be interesting.
+* I disabled the hover capabilites on the map color legend.  I'd like to instead have it be a click instead.  Switching between them is just too slow for hover to make sense.
