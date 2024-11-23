@@ -81,11 +81,11 @@ This shows the relationship between two different variables using bar marks and 
 * Each Variable can be set by the user to allow changing the graph up
 
 Bar/Line (left and right axis) can be set to:
-* # Beers
-* # Breweries
+* Number of Beers
+* Number of Breweries
 * Avg Rating
 * ABV
-* # Reviews
+* Number of Reviews
 
 Grouping can be set to:
 * Style
@@ -106,11 +106,11 @@ In this case, we are exploring rating vs style grouping
 Signals are point / area across the various axis
 
 Radius can be set to:
-* # Beers
-* # Breweries
+* Number of Beers
+* Number of Breweries
 * Avg Rating
 * ABV
-* # Reviews
+* Number of Reviews
 
 Grouping can be set to:
 * Style
@@ -137,8 +137,8 @@ From here, the user can:
 
 * Change the color legend (alternating how the map is colored)
 * Alternate between two different Map Navigation Modes:
-** Pan/Zoom - zoom in and scroll around the map
-** Brush - select a region of the map to set the longitude and latitude filters - so only beer reviews in that location show
+  * Pan/Zoom - zoom in and scroll around the map
+  * Brush - select a region of the map to set the longitude and latitude filters - so only beer reviews in that location show
 * Filter data using a form style control
 
 ### Filtering Data
