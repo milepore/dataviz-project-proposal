@@ -238,7 +238,7 @@ const GroupedHistogram = ({ data,
                 height,
                 margins,
                 'Rating',
-                valueRange,
+                ranges.map((r) => `${r[0]}`),
             );
 
 
